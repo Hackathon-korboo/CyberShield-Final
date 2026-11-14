@@ -31,7 +31,7 @@ class GeminiClient:
     def __init__(self):
         self.api_key = os.getenv("GEMINI_API_KEY", "").strip()
         self.model = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite").strip()
-        self.timeout = float(os.getenv("GEMINI_TIMEOUT_SECONDS", "4.0"))
+        self.timeout = float(os.getenv("GEMINI_TIMEOUT_SECONDS", "10.0"))
         self.max_retries = int(os.getenv("GEMINI_MAX_RETRIES", "0"))
         self.base_url = "https://generativelanguage.googleapis.com/v1beta/models"
 
@@ -142,7 +142,10 @@ class GeminiClient:
 
         active_key = self.current_api_key
         active_model = self.current_model
-        endpoint = f"{self.base_url}/{active_model}:generateContent?key={active_key}"
+        candidate_models = [active_model]
+        if "gemini-3.1-flash-lite" not in candidate_models:
+            candidate_models.append("gemini-3.1-flash-lite")
+
         payload = {
             "contents": [
                 {
@@ -161,103 +164,110 @@ class GeminiClient:
             }
         }
 
-        # Step 3: Attempt API invocation with retries and timeout
-        for attempt in range(self.max_retries + 1):
-            try:
-                response = requests.post(
-                    endpoint,
-                    json=payload,
-                    headers={"Content-Type": "application/json"},
-                    timeout=self.timeout
-                )
+        # Step 3: Attempt API invocation with supported candidate models and timeout
+        for current_try_model in candidate_models:
+            endpoint = f"{self.base_url}/{current_try_model}:generateContent?key={active_key}"
+            for attempt in range(self.max_retries + 1):
+                try:
+                    response = requests.post(
+                        endpoint,
+                        json=payload,
+                        headers={"Content-Type": "application/json"},
+                        timeout=self.timeout
+                    )
 
-                if response.status_code == 200:
-                    data = response.json()
-                    candidates = data.get("candidates", [])
-                    if not candidates:
-                        raise ValueError("No candidates returned from Gemini.")
+                    if response.status_code == 200:
+                        active_model = current_try_model
+                        data = response.json()
+                        candidates = data.get("candidates", [])
+                        if not candidates:
+                            raise ValueError("No candidates returned from Gemini.")
 
-                    raw_text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                    parsed = guard_instance.validate_model_output(raw_text)
+                        raw_text = candidates[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+                        parsed = guard_instance.validate_model_output(raw_text)
 
-                    # Safe category translation
-                    def safe_category(cat_str: str) -> ThreatCategory:
-                        try:
-                            return ThreatCategory(cat_str)
-                        except (ValueError, KeyError):
-                            upper = (cat_str or "").upper().replace(" ", "_")
-                            for member in ThreatCategory:
-                                if member.value == upper:
-                                    return member
-                            return ThreatCategory.BENIGN
+                        # Safe category translation
+                        def safe_category(cat_str: str) -> ThreatCategory:
+                            try:
+                                return ThreatCategory(cat_str)
+                            except (ValueError, KeyError):
+                                upper = (cat_str or "").upper().replace(" ", "_")
+                                for member in ThreatCategory:
+                                    if member.value == upper:
+                                        return member
+                                return ThreatCategory.BENIGN
 
-                    # Primary category channel resolution
-                    raw_primary = safe_category(parsed.get("primary_category", "BENIGN"))
-                    content_lower = sanitized_content.lower()
-                    if source_type in ("sms", "chat") and raw_primary == ThreatCategory.PHISHING_EMAIL:
-                        if "kyc" in content_lower or "bank" in content_lower:
-                            raw_primary = ThreatCategory.KYC_PHISHING
-                        else:
-                            raw_primary = ThreatCategory.SCAM_SMS
+                        # Primary category channel resolution
+                        raw_primary = safe_category(parsed.get("primary_category", "BENIGN"))
+                        content_lower = sanitized_content.lower()
+                        if source_type in ("sms", "chat") and raw_primary == ThreatCategory.PHISHING_EMAIL:
+                            if "kyc" in content_lower or "bank" in content_lower:
+                                raw_primary = ThreatCategory.KYC_PHISHING
+                            else:
+                                raw_primary = ThreatCategory.SCAM_SMS
 
-                    # Normalize and validate evidence items
-                    evidence = []
-                    for e in parsed.get("observed_evidence", []):
-                        ev_cat = safe_category(e.get("category", raw_primary.value))
-                        if source_type in ("sms", "chat") and ev_cat == ThreatCategory.PHISHING_EMAIL:
-                            ev_cat = ThreatCategory.KYC_PHISHING if "kyc" in content_lower else ThreatCategory.SCAM_SMS
-                        evidence.append(
-                            EvidenceItem(
-                                indicator=e.get("indicator", "Observed Threat"),
-                                description=e.get("description", ""),
-                                confidence=float(e.get("confidence", 0.85)),
-                                category=ev_cat,
-                                severity=e.get("severity", "MEDIUM"),
-                                raw_snippet=e.get("raw_snippet")
+                        # Normalize and validate evidence items
+                        evidence = []
+                        for e in parsed.get("observed_evidence", []):
+                            ev_cat = safe_category(e.get("category", raw_primary.value))
+                            if source_type in ("sms", "chat") and ev_cat == ThreatCategory.PHISHING_EMAIL:
+                                ev_cat = ThreatCategory.KYC_PHISHING if "kyc" in content_lower else ThreatCategory.SCAM_SMS
+                            evidence.append(
+                                EvidenceItem(
+                                    indicator=e.get("indicator", "Observed Threat"),
+                                    description=e.get("description", ""),
+                                    confidence=float(e.get("confidence", 0.85)),
+                                    category=ev_cat,
+                                    severity=e.get("severity", "MEDIUM"),
+                                    raw_snippet=e.get("raw_snippet")
+                                )
                             )
-                        )
 
-                    mitigations = [
-                        MitigationStep(
-                            action=m.get("action", "Exercise caution"),
-                            urgency=UrgencyLevel(m.get("urgency", "MEDIUM")),
-                            details=m.get("details", "")
-                        )
-                        for m in parsed.get("mitigation_recommendations", [])
-                    ]
+                        mitigations = [
+                            MitigationStep(
+                                action=m.get("action", "Exercise caution"),
+                                urgency=UrgencyLevel(m.get("urgency", "MEDIUM")),
+                                details=m.get("details", "")
+                            )
+                            for m in parsed.get("mitigation_recommendations", [])
+                        ]
 
-                    detected_cats = [safe_category(c) for c in parsed.get("detected_categories", [raw_primary.value])]
-                    if raw_primary not in detected_cats:
-                        detected_cats.insert(0, raw_primary)
+                        detected_cats = [safe_category(c) for c in parsed.get("detected_categories", [raw_primary.value])]
+                        if raw_primary not in detected_cats:
+                            detected_cats.insert(0, raw_primary)
 
-                    return {
-                        "risk_level": RiskLevel(parsed.get("risk_level", "LOW")),
-                        "risk_score": float(parsed.get("risk_score", 10.0)),
-                        "primary_category": raw_primary,
-                        "detected_categories": detected_cats,
-                        "confidence_score": float(parsed.get("confidence_score", 0.90)),
-                        "observed_evidence": evidence,
-                        "ai_assessment": parsed.get("ai_assessment", "Assessment complete."),
-                        "uncertainty_factors": parsed.get("uncertainty_factors", []),
-                        "mitigation_recommendations": mitigations,
-                        "engine_used": f"gemini ({active_model})"
-                    }
+                        return {
+                            "risk_level": RiskLevel(parsed.get("risk_level", "LOW")),
+                            "risk_score": float(parsed.get("risk_score", 10.0)),
+                            "primary_category": raw_primary,
+                            "detected_categories": detected_cats,
+                            "confidence_score": float(parsed.get("confidence_score", 0.90)),
+                            "observed_evidence": evidence,
+                            "ai_assessment": parsed.get("ai_assessment", "Assessment complete."),
+                            "uncertainty_factors": parsed.get("uncertainty_factors", []),
+                            "mitigation_recommendations": mitigations,
+                            "engine_used": f"gemini ({active_model})"
+                        }
 
-                elif response.status_code in (429, 500, 502, 503, 504):
-                    logger.warning(f"Gemini API unavailable or high demand (HTTP {response.status_code}). Triggering instant heuristic fallback.")
+                    elif response.status_code == 404:
+                        logger.warning(f"Gemini model '{current_try_model}' not found (HTTP 404). Trying next supported model.")
+                        break
+                    elif response.status_code in (429, 500, 502, 503, 504):
+                        logger.warning(f"Gemini API unavailable or high demand (HTTP {response.status_code}). Triggering instant heuristic fallback.")
+                        break
+                    elif response.status_code in (401, 403):
+                        logger.error(f"Gemini API authentication failed (HTTP {response.status_code}). Triggering fallback.")
+                        break
+                    else:
+                        logger.warning(f"Gemini API returned status {response.status_code}: {response.text[:150]}")
+                        break
+
+                except (requests.Timeout, requests.ConnectionError) as exc:
+                    logger.warning(f"Gemini request failed or timed out: {str(exc)}. Triggering instant fallback.")
                     break
-                elif response.status_code in (401, 403):
-                    logger.error(f"Gemini API authentication failed (HTTP {response.status_code}). Triggering fallback.")
+                except Exception as exc:
+                    logger.error(f"Unexpected error calling Gemini API: {str(exc)}")
                     break
-                else:
-                    logger.warning(f"Gemini API returned status {response.status_code}: {response.text[:150]}")
-                    break
-
-            except (requests.Timeout, requests.ConnectionError) as exc:
-                logger.warning(f"Gemini request failed or timed out: {str(exc)}. Triggering instant fallback.")
-                break
-            except Exception as exc:
-                logger.error(f"Unexpected error calling Gemini API: {str(exc)}")
                 break
 
         # Step 4: Graceful fallback to Heuristic Engine

@@ -206,7 +206,7 @@ async def test_user_exact_injection_sms_attack_in_fallback_and_mock():
     # Critical requirement: Scam risk score must remain 0 and CLEAN (not arbitrarily inflated)
     assert fallback_resp.heuristic_findings.risk_score == 0
     assert fallback_resp.heuristic_findings.risk_level == "CLEAN"
-    assert "Adversarial prompt injection" in fallback_resp.ai_analysis.summary
+    assert "adversarial prompt injection" in fallback_resp.ai_analysis.summary.lower()
 
     # 3. Test via AIThreatService with MockAIProvider
     mock_service = AIThreatService(ai_provider=MockAIProvider())

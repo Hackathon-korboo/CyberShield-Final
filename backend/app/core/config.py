@@ -60,7 +60,7 @@ class Settings(BaseSettings):
         description="Google Gemini API Key for semantic social engineering analysis.",
     )
     gemini_model_name: str = Field(
-        default="gemini-1.5-flash",
+        default="gemini-3.1-flash-lite",
         description="Gemini model variant for threat analysis.",
     )
     ai_analysis_enabled: bool = Field(
