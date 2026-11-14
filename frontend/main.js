@@ -17,9 +17,15 @@
 // 1. CONFIGURATION & STATE MANAGEMENT
 // =============================================================================
 
-const API_BASE = window.location.origin.includes(':8000')
-  ? ''
-  : (window.location.protocol.startsWith('http') ? '' : 'http://127.0.0.1:8000');
+const API_BASE = (function() {
+  if (typeof window === 'undefined') return 'https://cybershield-ai-api.vercel.app';
+  if (window.VITE_API_BASE_URL) return window.VITE_API_BASE_URL.replace(/\/+$/, '');
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return window.location.origin.includes(':8000') ? '' : 'http://127.0.0.1:8000';
+  }
+  return 'https://cybershield-ai-api.vercel.app';
+})();
 
 // Session telemetry storage
 const SESSION_DATA = {
@@ -569,7 +575,7 @@ window.executeUrlAnalysis = async function() {
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}));
-      throw new Error(errJson.detail || `Server returned HTTP ${res.status}`);
+      throw new Error(errJson.detail || (errJson.error && errJson.error.message) || `Server returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -644,7 +650,7 @@ window.executeSmsAnalysis = async function() {
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}));
-      throw new Error(errJson.detail || `Server returned HTTP ${res.status}`);
+      throw new Error(errJson.detail || (errJson.error && errJson.error.message) || `Server returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -726,7 +732,7 @@ window.executeEmailAnalysis = async function() {
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}));
-      throw new Error(errJson.detail || `Server returned HTTP ${res.status}`);
+      throw new Error(errJson.detail || (errJson.error && errJson.error.message) || `Server returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -800,7 +806,7 @@ window.executeTextAnalysis = async function() {
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}));
-      throw new Error(errJson.detail || `Server returned HTTP ${res.status}`);
+      throw new Error(errJson.detail || (errJson.error && errJson.error.message) || `Server returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -862,7 +868,7 @@ window.executeFileAnalysis = async function() {
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({}));
-      throw new Error(errJson.detail || `Server returned HTTP ${res.status}`);
+      throw new Error(errJson.detail || (errJson.error && errJson.error.message) || `Server returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -1367,10 +1373,11 @@ window.checkBackendHealth = async function() {
     const res = await fetch(`${API_BASE}/health`, { method: "GET" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    const data = await res.json();
+    const rawData = await res.json();
+    const data = rawData.data || rawData;
 
     if (backendStatusText) {
-      backendStatusText.textContent = "CORE // ONLINE (PORT 8000)";
+      backendStatusText.textContent = `CORE // ${data.status ? data.status.toUpperCase() : "ONLINE"}`;
     }
     if (globalHealthPill) {
       globalHealthPill.classList.remove("status-offline");
