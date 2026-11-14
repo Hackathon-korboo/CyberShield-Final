@@ -1110,6 +1110,21 @@
 
               <!-- Active Results Container -->
               <div class="lab-results-container" id="lab-results" hidden>
+                <!-- Prominent URL Threat Warning Banner (Immediate alert when URL risk score >= 50) -->
+                <div class="url-prominent-warning-banner" id="url-prominent-warning-banner" hidden>
+                  <div class="url-warning-icon-wrap" id="url-warning-icon-wrap">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                  </div>
+                  <div class="url-warning-content">
+                    <div class="url-warning-badge" id="url-warning-badge">SECURITY THREAT ALERT</div>
+                    <h4 class="url-warning-title" id="url-warning-title">WARNING: POTENTIALLY MALICIOUS WEBSITE DETECTED</h4>
+                    <p class="url-warning-desc" id="url-warning-desc">High-risk deceptive traits and suspicious vectors identified. Do not disclose credentials, personal data, or execute downloads on this destination.</p>
+                    <div class="url-warning-action" id="url-warning-action">
+                      <i class="fa-solid fa-hand"></i> <strong>RECOMMENDED ACTION:</strong> <span id="url-warning-action-text">DO NOT PROCEED. Close this tab and avoid navigating to this address.</span>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Prominent Verdict-First Card (Verdict & Risk Level displayed BEFORE numerical score) -->
                 <div class="verdict-card" id="verdict-banner">
                   <div class="verdict-main-row">
@@ -1144,6 +1159,14 @@
                       <span class="metric-label">ENGINE</span>
                       <span class="metric-value" id="res-engine-used">hybrid-ensemble</span>
                     </div>
+                  </div>
+
+                  <!-- URL Optional Threat Score Toggle Control (Only active for URL analysis; hidden by default) -->
+                  <div class="url-score-toggle-bar" id="url-score-toggle-bar" hidden>
+                    <button type="button" class="btn-url-score-toggle" id="btn-toggle-threat-score" onclick="toggleUrlThreatScore()">
+                      <i class="fa-solid fa-gauge-high"></i> <span id="btn-toggle-threat-score-text">SHOW THREAT SCORE</span>
+                    </button>
+                    <span class="url-score-toggle-hint" id="url-score-toggle-hint">Numerical threat score is hidden by default. Click to inspect calibrated risk evaluation.</span>
                   </div>
 
                   <!-- Primary Action Callout -->

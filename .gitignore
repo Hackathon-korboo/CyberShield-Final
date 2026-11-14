@@ -58,14 +58,11 @@ server_stdout.log
 server_stderr.log
 
 # Private Backups & Local Scratch Testing
-Brain/BACKUP*/
 Brain/BACKUPS/
-*backup*
-*.bak
-*.backup
 Brain/FINAL_VERIFICATION/test_*.py
 Brain/FINAL_VERIFICATION/inspect_*.py
 Brain/FINAL_VERIFICATION/verify_*.py
+test_url_ui_presentation.js
 
 # Legacy / Duplicate unintegrated directories
 member-2-main/

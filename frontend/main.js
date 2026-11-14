@@ -293,6 +293,7 @@ window.clearInput = function(elementId) {
 };
 
 window.loadUrlSample = function(key) {
+  window.urlThreatScoreRevealed = false;
   const url = URL_SAMPLES[key];
   if (!url) return;
   switchLabTab("url");
@@ -399,6 +400,7 @@ window.loadSample = function(sampleKey, autoRun = false) {
 };
 
 window.switchLabTab = function(tab) {
+  window.urlThreatScoreRevealed = false;
   const modes = ['url', 'sms', 'email', 'text', 'file'];
   if (!modes.includes(tab)) tab = 'text';
 
@@ -524,6 +526,7 @@ window.abortAnalysis = function() {
 };
 
 window.executeUrlAnalysis = async function() {
+  window.urlThreatScoreRevealed = false;
   const urlInput = document.getElementById("analysis-input-url");
   let url = urlInput ? urlInput.value.trim() : "";
   if (!url) {
@@ -896,6 +899,35 @@ window.executeFileAnalysis = async function() {
 // 8. RESULT RENDERING & VERDICT PRESENTATION ENGINE
 // =============================================================================
 
+window.urlThreatScoreRevealed = false;
+
+window.toggleUrlThreatScore = function() {
+  const riskScoreBadge = document.getElementById("res-risk-score-badge");
+  const btnToggle = document.getElementById("btn-toggle-threat-score");
+
+  if (!riskScoreBadge || !btnToggle) return;
+
+  if (!window.urlThreatScoreRevealed) {
+    // Reveal score
+    window.urlThreatScoreRevealed = true;
+    riskScoreBadge.removeAttribute("hidden");
+    riskScoreBadge.classList.add("score-revealed");
+    btnToggle.classList.add("revealed");
+    btnToggle.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span id="btn-toggle-threat-score-text">HIDE THREAT SCORE</span>';
+    const textSpan = document.getElementById("btn-toggle-threat-score-text");
+    if (textSpan) textSpan.textContent = "HIDE THREAT SCORE";
+  } else {
+    // Hide score
+    window.urlThreatScoreRevealed = false;
+    riskScoreBadge.setAttribute("hidden", "");
+    riskScoreBadge.classList.remove("score-revealed");
+    btnToggle.classList.remove("revealed");
+    btnToggle.innerHTML = '<i class="fa-solid fa-gauge-high"></i> <span id="btn-toggle-threat-score-text">SHOW THREAT SCORE</span>';
+    const textSpan = document.getElementById("btn-toggle-threat-score-text");
+    if (textSpan) textSpan.textContent = "SHOW THREAT SCORE";
+  }
+};
+
 function deriveVerdict(data, inputType, content) {
   const score = typeof data.risk_score === "number" ? data.risk_score : 0;
   const level = (data.risk_level || "UNKNOWN").toUpperCase();
@@ -906,6 +938,18 @@ function deriveVerdict(data, inputType, content) {
   const hasUrlPattern = /https?:\/\/[^\s]+|[a-zA-Z0-9-]+\.(xyz|top|online|vip|site|cc|ru|work|shop|in|com|net|org)(\/[^\s]*)?/i.test(content || "");
   const hasIocUrls = data.iocs && Array.isArray(data.iocs.urls) && data.iocs.urls.length > 0;
   const isUrl = inputType === "url" || (content && (content.trim().startsWith("http://") || content.trim().startsWith("https://"))) || hasUrlPattern || hasIocUrls;
+
+  // Sanitize category for URL presentation to avoid confusing email/SMS labels
+  let cleanCategory = primaryCat;
+  if (isUrl) {
+    if (cleanCategory.includes("EMAIL") || cleanCategory.includes("SMS")) {
+      cleanCategory = cleanCategory.includes("PHISHING") ? "PHISHING_URL" : "URL_THREAT";
+    } else if (cleanCategory === "BENIGN" || cleanCategory === "BENIGN_MESSAGE") {
+      cleanCategory = "SAFE_URL";
+    } else if (cleanCategory === "GENERAL" || !cleanCategory) {
+      cleanCategory = score >= 50 ? "MALICIOUS_URL" : (score >= 25 ? "SUSPICIOUS_URL" : "SAFE_URL");
+    }
+  }
 
   let verdictKey = "NO_THREAT_DETECTED";
   let verdictTitle = "";
@@ -923,66 +967,120 @@ function deriveVerdict(data, inputType, content) {
     (data.external_threat_intel && Object.values(data.external_threat_intel).some(vt => vt && vt.status === "MALICIOUS"))
   );
 
-  if (promptInjection) {
-    verdictKey = "MALICIOUS";
-    verdictTitle = isUrl ? "MALICIOUS WEBSITE / INJECTION PAYLOAD" : "PROMPT INJECTION ATTACK INTERCEPTED";
-    verdictSubtitle = "Adversarial instruction override attempt targeting AI reasoning was intercepted and quarantined.";
-    verdictBadgeClass = "verdict-malicious";
-    legacySevClass = "sev-critical";
-    iconClass = "fa-solid fa-triangle-exclamation";
-    whyFlagged.push("Explicit instruction override pattern detected in payload.");
-    whyFlagged.push("Adversarial jailbreak attempting to bypass threat detection.");
-    primaryAction = "QUARANTINE PAYLOAD: Do not forward or pass untrusted input into administrative or AI systems.";
-  } else if (hasAuthoritative) {
-    verdictKey = "MALICIOUS";
-    verdictTitle = isUrl ? "CONFIRMED MALICIOUS WEBSITE" : "CONFIRMED MALICIOUS THREAT";
-    verdictSubtitle = `Authoritative external threat intelligence confirmed malicious indicators matching ${primaryCat.replace(/_/g, " ")}.`;
-    verdictBadgeClass = "verdict-malicious";
-    legacySevClass = "sev-critical";
-    iconClass = "fa-solid fa-skull-crossbones";
-    primaryAction = "DO NOT PROCEED: Block domain/sender immediately. Verified malicious entity.";
-  } else if (score >= 60 || level === "CRITICAL" || level === "HIGH") {
-    verdictKey = "LIKELY MALICIOUS";
-    if (isUrl) {
-      verdictTitle = "LIKELY MALICIOUS WEBSITE";
-      verdictSubtitle = `Strong deceptive heuristics and threat vectors consistent with ${primaryCat.replace(/_/g, " ")}.`;
-    } else {
-      verdictTitle = "LIKELY FRAUDULENT MESSAGE";
-      verdictSubtitle = `High-confidence deceptive indicators and social engineering tactics matching ${primaryCat.replace(/_/g, " ")}.`;
-    }
-    verdictBadgeClass = "verdict-likely-malicious";
-    legacySevClass = score >= 85 ? "sev-critical" : "sev-high";
-    iconClass = "fa-solid fa-triangle-exclamation";
-    primaryAction = "DO NOT PROCEED: Do not follow instructions, transfer funds, or disclose credentials.";
-  } else if (score >= 35 || level === "MEDIUM") {
-    verdictKey = "SUSPICIOUS";
-    if (isUrl) {
+  if (isUrl) {
+    // -------------------------------------------------------------------------
+    // URL ANALYSIS VERDICT RULES
+    // Risk score 0–24.9: Low Risk / No significant threat indicators.
+    // Risk score 25–49.9: Suspicious Website.
+    // Risk score 50–74.9: HIGH RISK — POTENTIAL MALICIOUS WEBSITE.
+    // Risk score 75–100: CRITICAL RISK — LIKELY MALICIOUS WEBSITE.
+    // Authoritative match: CONFIRMED MALICIOUS WEBSITE.
+    // -------------------------------------------------------------------------
+    if (promptInjection) {
+      verdictKey = "MALICIOUS";
+      verdictTitle = "MALICIOUS WEBSITE / INJECTION PAYLOAD";
+      verdictSubtitle = "Adversarial instruction override attempt targeting AI reasoning was intercepted and quarantined.";
+      verdictBadgeClass = "verdict-malicious";
+      legacySevClass = "sev-critical";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      whyFlagged.push("Explicit instruction override pattern detected in URL payload.");
+      whyFlagged.push("Adversarial jailbreak attempting to bypass threat detection.");
+      primaryAction = "QUARANTINE PAYLOAD: Do not forward or pass untrusted input into administrative or AI systems.";
+    } else if (hasAuthoritative) {
+      verdictKey = "MALICIOUS";
+      verdictTitle = "CONFIRMED MALICIOUS WEBSITE";
+      verdictSubtitle = `Authoritative external threat intelligence confirmed malicious indicators matching ${cleanCategory.replace(/_/g, " ")}.`;
+      verdictBadgeClass = "verdict-malicious";
+      legacySevClass = "sev-critical";
+      iconClass = "fa-solid fa-skull-crossbones";
+      primaryAction = "DO NOT PROCEED: Block domain/URL immediately. Verified malicious entity.";
+    } else if (score >= 75) {
+      verdictKey = "CRITICAL_RISK";
+      verdictTitle = "CRITICAL RISK — LIKELY MALICIOUS WEBSITE";
+      verdictSubtitle = `Critical-severity heuristic indicators and deceptive patterns detected matching ${cleanCategory.replace(/_/g, " ")}.`;
+      verdictBadgeClass = "verdict-likely-malicious";
+      legacySevClass = "sev-critical";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      primaryAction = "DO NOT NAVIGATE: Critical threat indicators detected. Avoid entering credentials, submitting forms, or executing downloads on this site.";
+    } else if (score >= 50) {
+      verdictKey = "HIGH_RISK";
+      verdictTitle = "HIGH RISK — POTENTIAL MALICIOUS WEBSITE";
+      verdictSubtitle = `High-risk indicators and suspicious domain attributes identified matching ${cleanCategory.replace(/_/g, " ")}.`;
+      verdictBadgeClass = "verdict-likely-malicious";
+      legacySevClass = "sev-high";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      primaryAction = "DO NOT PROCEED: High-risk deceptive traits observed. Do not provide sensitive data, passwords, or personal credentials.";
+    } else if (score >= 25) {
+      verdictKey = "SUSPICIOUS";
       verdictTitle = "SUSPICIOUS WEBSITE";
       verdictSubtitle = "Anomalous domain traits, suspicious TLD, or unverified source identified.";
+      verdictBadgeClass = "verdict-suspicious";
+      legacySevClass = "sev-medium";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      primaryAction = "EXERCISE CAUTION: Unverified or irregular domain traits observed. Independently verify authenticity before interacting.";
     } else {
+      // Score 0 - 24.9: Low Risk / No significant threat indicators
+      verdictKey = "LOW_RISK";
+      verdictTitle = score >= 10 ? "LOW RISK — MINIMAL ANOMALIES" : "VERIFIED SAFE WEBSITE";
+      verdictSubtitle = "No significant threat indicators or malicious vectors detected across security checks.";
+      verdictBadgeClass = score >= 10 ? "verdict-likely-safe" : "verdict-safe";
+      legacySevClass = score >= 10 ? "sev-low" : "sev-benign";
+      iconClass = score >= 10 ? "fa-solid fa-circle-check" : "fa-solid fa-shield-halved";
+      primaryAction = "NORMAL MONITORING: Low risk observed. Standard operational caution recommended for external resources.";
+    }
+  } else {
+    // Non-URL (SMS, Email, Text, File) - exact existing logic preserved!
+    if (promptInjection) {
+      verdictKey = "MALICIOUS";
+      verdictTitle = "PROMPT INJECTION ATTACK INTERCEPTED";
+      verdictSubtitle = "Adversarial instruction override attempt targeting AI reasoning was intercepted and quarantined.";
+      verdictBadgeClass = "verdict-malicious";
+      legacySevClass = "sev-critical";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      whyFlagged.push("Explicit instruction override pattern detected in payload.");
+      whyFlagged.push("Adversarial jailbreak attempting to bypass threat detection.");
+      primaryAction = "QUARANTINE PAYLOAD: Do not forward or pass untrusted input into administrative or AI systems.";
+    } else if (hasAuthoritative) {
+      verdictKey = "MALICIOUS";
+      verdictTitle = "CONFIRMED MALICIOUS THREAT";
+      verdictSubtitle = `Authoritative external threat intelligence confirmed malicious indicators matching ${primaryCat.replace(/_/g, " ")}.`;
+      verdictBadgeClass = "verdict-malicious";
+      legacySevClass = "sev-critical";
+      iconClass = "fa-solid fa-skull-crossbones";
+      primaryAction = "DO NOT PROCEED: Block domain/sender immediately. Verified malicious entity.";
+    } else if (score >= 60 || level === "CRITICAL" || level === "HIGH") {
+      verdictKey = "LIKELY MALICIOUS";
+      verdictTitle = "LIKELY FRAUDULENT MESSAGE";
+      verdictSubtitle = `High-confidence deceptive indicators and social engineering tactics matching ${primaryCat.replace(/_/g, " ")}.`;
+      verdictBadgeClass = "verdict-likely-malicious";
+      legacySevClass = score >= 85 ? "sev-critical" : "sev-high";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      primaryAction = "DO NOT PROCEED: Do not follow instructions, transfer funds, or disclose credentials.";
+    } else if (score >= 35 || level === "MEDIUM") {
+      verdictKey = "SUSPICIOUS";
       verdictTitle = "SUSPICIOUS CONTENT DETECTED";
       verdictSubtitle = "Coercive urgency, unverified claims, or irregular communication patterns observed.";
+      verdictBadgeClass = "verdict-suspicious";
+      legacySevClass = "sev-medium";
+      iconClass = "fa-solid fa-triangle-exclamation";
+      primaryAction = "EXERCISE CAUTION: Independently verify legitimacy through official, out-of-band contact channels.";
+    } else if (score >= 10 || level === "LOW") {
+      verdictKey = "LIKELY SAFE";
+      verdictTitle = "LIKELY SAFE CONTENT";
+      verdictSubtitle = "Minimal risk signatures detected. Low-level anomalies present but no malicious intent confirmed.";
+      verdictBadgeClass = "verdict-likely-safe";
+      legacySevClass = "sev-low";
+      iconClass = "fa-solid fa-circle-check";
+      primaryAction = "NORMAL MONITORING: Low risk observed. Standard operational caution recommended for external resources.";
+    } else {
+      verdictKey = "NO_THREAT_DETECTED";
+      verdictTitle = "NO THREAT DETECTED (CLEAN)";
+      verdictSubtitle = "Zero threat indicators detected across heuristic baselines, AI evaluation, and security checks.";
+      verdictBadgeClass = "verdict-safe";
+      legacySevClass = "sev-benign";
+      iconClass = "fa-solid fa-shield-halved";
+      primaryAction = "VERIFIED SAFE: No security countermeasures required.";
     }
-    verdictBadgeClass = "verdict-suspicious";
-    legacySevClass = "sev-medium";
-    iconClass = "fa-solid fa-triangle-exclamation";
-    primaryAction = "EXERCISE CAUTION: Independently verify legitimacy through official, out-of-band contact channels.";
-  } else if (score >= 10 || level === "LOW") {
-    verdictKey = "LIKELY SAFE";
-    verdictTitle = isUrl ? "LIKELY SAFE WEBSITE" : "LIKELY SAFE CONTENT";
-    verdictSubtitle = "Minimal risk signatures detected. Low-level anomalies present but no malicious intent confirmed.";
-    verdictBadgeClass = "verdict-likely-safe";
-    legacySevClass = "sev-low";
-    iconClass = "fa-solid fa-circle-check";
-    primaryAction = "NORMAL MONITORING: Low risk observed. Standard operational caution recommended for external resources.";
-  } else {
-    verdictKey = "NO_THREAT_DETECTED";
-    verdictTitle = isUrl ? "VERIFIED SAFE WEBSITE" : "NO THREAT DETECTED (CLEAN)";
-    verdictSubtitle = "Zero threat indicators detected across heuristic baselines, AI evaluation, and security checks.";
-    verdictBadgeClass = "verdict-safe";
-    legacySevClass = "sev-benign";
-    iconClass = "fa-solid fa-shield-halved";
-    primaryAction = "VERIFIED SAFE: No security countermeasures required.";
   }
 
   // Compile "Why was it flagged?" items from observed evidence or baseline findings
@@ -997,12 +1095,12 @@ function deriveVerdict(data, inputType, content) {
   }
 
   if (whyFlagged.length === 0) {
-    if (verdictKey === "NO_THREAT_DETECTED" || verdictKey === "LIKELY SAFE") {
+    if (verdictKey === "NO_THREAT_DETECTED" || verdictKey === "LIKELY SAFE" || verdictKey === "LOW_RISK") {
       whyFlagged.push("No deceptive URLs or suspicious domains detected.");
       whyFlagged.push("Zero urgency coercion, threats of arrest, or financial pressure.");
       whyFlagged.push("No credential harvesting forms or suspicious redirection vectors.");
     } else {
-      whyFlagged.push(`Elevated risk score (${score.toFixed(1)}/100) based on category: ${primaryCat}.`);
+      whyFlagged.push(`Elevated risk score (${score.toFixed(1)}/100) based on category: ${cleanCategory}.`);
     }
   }
 
@@ -1019,7 +1117,10 @@ function deriveVerdict(data, inputType, content) {
     isUrl,
     level,
     score,
-    primaryCat
+    primaryCat: isUrl ? cleanCategory : primaryCat,
+    cleanCategory,
+    hasAuthoritative,
+    promptInjection
   };
 }
 
@@ -1062,7 +1163,7 @@ function renderAnalysisResult(data, rawSnippet, inputType = "text") {
 
   if (riskLevelEl) riskLevelEl.textContent = v.level;
   if (riskScoreEl) riskScoreEl.textContent = v.score.toFixed(1);
-  if (primaryCatEl) primaryCatEl.textContent = v.primaryCat;
+  if (primaryCatEl) primaryCatEl.textContent = v.cleanCategory || v.primaryCat;
   if (engineUsedEl) engineUsedEl.textContent = data.engine_used || "hybrid-ensemble";
 
   // Apply visual styling classes to banner
@@ -1071,6 +1172,78 @@ function renderAnalysisResult(data, rawSnippet, inputType = "text") {
     bannerEl.classList.add(v.verdictBadgeClass);
     if (v.legacySevClass) {
       bannerEl.classList.add(v.legacySevClass);
+    }
+  }
+
+  // Prominent URL Warning Banner (When URL risk score >= 50 or authoritative match)
+  const urlWarnBanner = document.getElementById("url-prominent-warning-banner");
+  const urlWarnTitle = document.getElementById("url-warning-title");
+  const urlWarnDesc = document.getElementById("url-warning-desc");
+  const urlWarnActionText = document.getElementById("url-warning-action-text");
+
+  if (urlWarnBanner) {
+    if (v.isUrl && (v.score >= 50 || v.hasAuthoritative || v.promptInjection)) {
+      urlWarnBanner.removeAttribute("hidden");
+      if (v.hasAuthoritative) {
+        urlWarnBanner.className = "url-prominent-warning-banner warning-critical-risk";
+        urlWarnBanner.classList.add("warning-critical-risk");
+        if (urlWarnTitle) urlWarnTitle.textContent = "WARNING: CONFIRMED MALICIOUS WEBSITE DETECTED";
+        if (urlWarnDesc) urlWarnDesc.textContent = "Authoritative external threat intelligence verified this destination as malicious. High probability of credential theft, exploit delivery, or severe fraud.";
+        if (urlWarnActionText) urlWarnActionText.textContent = "DO NOT PROCEED. Close this tab immediately and block domain traffic.";
+      } else if (v.promptInjection) {
+        urlWarnBanner.className = "url-prominent-warning-banner warning-critical-risk";
+        urlWarnBanner.classList.add("warning-critical-risk");
+        if (urlWarnTitle) urlWarnTitle.textContent = "WARNING: ADVERSARIAL INJECTION PAYLOAD DETECTED";
+        if (urlWarnDesc) urlWarnDesc.textContent = "Untrusted instruction override pattern detected attempting to compromise threat evaluation pipeline.";
+        if (urlWarnActionText) urlWarnActionText.textContent = "QUARANTINE PAYLOAD: Do not forward or pass untrusted input into administrative or AI systems.";
+      } else if (v.score >= 75) {
+        urlWarnBanner.className = "url-prominent-warning-banner warning-critical-risk";
+        urlWarnBanner.classList.add("warning-critical-risk");
+        if (urlWarnTitle) urlWarnTitle.textContent = "WARNING: POTENTIALLY MALICIOUS WEBSITE DETECTED";
+        if (urlWarnDesc) urlWarnDesc.textContent = "Critical-severity deceptive traits and high-risk URL anomaly vectors detected. Navigating to this site poses severe risk to credentials and security.";
+        if (urlWarnActionText) urlWarnActionText.textContent = "DO NOT NAVIGATE. Do not provide passwords, OTPs, personal credentials, or execute downloads.";
+      } else {
+        // Score 50 - 74.9
+        urlWarnBanner.className = "url-prominent-warning-banner warning-high-risk";
+        urlWarnBanner.classList.add("warning-high-risk");
+        if (urlWarnTitle) urlWarnTitle.textContent = "WARNING: POTENTIALLY MALICIOUS WEBSITE DETECTED";
+        if (urlWarnDesc) urlWarnDesc.textContent = "High-risk indicators and suspicious domain attributes identified. High potential for deceptive impersonation, credential harvesting, or phishing.";
+        if (urlWarnActionText) urlWarnActionText.textContent = "DO NOT PROCEED. High-risk deceptive traits observed. Verify through official channels before interacting.";
+      }
+    } else {
+      urlWarnBanner.setAttribute("hidden", "");
+    }
+  }
+
+  // URL Threat Score visibility control (Hidden by default for URL; visible for other types)
+  const riskScoreBadge = document.getElementById("res-risk-score-badge");
+  const urlScoreToggleBar = document.getElementById("url-score-toggle-bar");
+  const btnToggleThreatScore = document.getElementById("btn-toggle-threat-score");
+
+  if (v.isUrl) {
+    // Score is hidden by default for URL analysis
+    window.urlThreatScoreRevealed = false;
+    if (riskScoreBadge) {
+      riskScoreBadge.setAttribute("hidden", "");
+      riskScoreBadge.classList.remove("score-revealed");
+    }
+    if (urlScoreToggleBar) {
+      urlScoreToggleBar.removeAttribute("hidden");
+    }
+    if (btnToggleThreatScore) {
+      btnToggleThreatScore.classList.remove("revealed");
+      btnToggleThreatScore.innerHTML = '<i class="fa-solid fa-gauge-high"></i> <span id="btn-toggle-threat-score-text">SHOW THREAT SCORE</span>';
+      const textSpan = document.getElementById("btn-toggle-threat-score-text");
+      if (textSpan) textSpan.textContent = "SHOW THREAT SCORE";
+    }
+  } else {
+    // For SMS, Email, Text, File: score badge is always visible as before
+    if (riskScoreBadge) {
+      riskScoreBadge.removeAttribute("hidden");
+      riskScoreBadge.classList.remove("score-revealed");
+    }
+    if (urlScoreToggleBar) {
+      urlScoreToggleBar.setAttribute("hidden", "");
     }
   }
 

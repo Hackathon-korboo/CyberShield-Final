@@ -20,7 +20,7 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 @pytest.mark.asyncio
 async def test_live_gemini_api_connectivity():
     """Verify live asynchronous generation with genuine Google GenAI API."""
-    provider = GeminiProvider(api_key=GEMINI_API_KEY, timeout=10.0)
+    provider = GeminiProvider(api_key=GEMINI_API_KEY, timeout=20.0)
     assert provider.is_configured is True
 
     prompt = "Respond with the single word: OK"
@@ -36,7 +36,7 @@ async def test_live_gemini_api_connectivity():
 @pytest.mark.asyncio
 async def test_live_gemini_health_check():
     """Verify live health check returns healthy status."""
-    provider = GeminiProvider(api_key=GEMINI_API_KEY, timeout=10.0)
+    provider = GeminiProvider(api_key=GEMINI_API_KEY, timeout=20.0)
     health = await provider.health_check()
 
     assert health.status == "healthy"
