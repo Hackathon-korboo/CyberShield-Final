@@ -14,10 +14,13 @@ from backend.app.core.config import get_settings
 
 logger = logging.getLogger("cybershield.db")
 
-DEFAULT_DB_PATH = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-    "cybershield.db",
-)
+import tempfile
+
+_candidate_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or not os.access(_candidate_dir, os.W_OK):
+    DEFAULT_DB_PATH = os.path.join(tempfile.gettempdir(), "cybershield.db")
+else:
+    DEFAULT_DB_PATH = os.path.join(_candidate_dir, "cybershield.db")
 
 
 class DatabaseManager:
@@ -85,7 +88,29 @@ class DatabaseManager:
                 conn.commit()
             logger.info("Database schema initialized successfully at %s", self.db_path)
         except Exception as e:
-            logger.error("Failed to initialize database schema: %s", e)
+            logger.warning("Failed to initialize database at %s (%s); falling back to :memory:", self.db_path, e)
+            try:
+                self.db_path = ":memory:"
+                with self._get_connection() as conn:
+                    conn.execute(
+                        """
+                        CREATE TABLE IF NOT EXISTS scan_reports (
+                            scan_id TEXT PRIMARY KEY,
+                            submitted_input TEXT NOT NULL,
+                            input_type TEXT NOT NULL,
+                            classification TEXT NOT NULL,
+                            risk_score INTEGER,
+                            canonical_sha256 TEXT NOT NULL,
+                            blockchain_status TEXT NOT NULL DEFAULT 'NOT_REGISTERED',
+                            report_json TEXT NOT NULL,
+                            created_at TEXT NOT NULL
+                        );
+                        """
+                    )
+                    conn.commit()
+                logger.info("In-memory fallback database initialized successfully.")
+            except Exception as inner_e:
+                logger.error("Failed to initialize database schema: %s", inner_e)
 
     @contextmanager
     def connection(self) -> Generator[sqlite3.Connection, None, None]:

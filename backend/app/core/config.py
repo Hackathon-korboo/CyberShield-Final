@@ -5,7 +5,7 @@ validation, safe defaults, and secret masking.
 """
 
 from functools import lru_cache
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Union
 from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -36,12 +36,13 @@ class Settings(BaseSettings):
     api_v1_str: str = Field("/api/v1", description="Prefix for API version 1 endpoints.")
 
     # CORS Configuration
-    cors_origins: List[str] = Field(
+    cors_origins: Union[List[str], str] = Field(
         default_factory=lambda: [
             "http://localhost:3000",
             "http://localhost:5173",
             "http://127.0.0.1:3000",
             "http://127.0.0.1:5173",
+            "*",
         ],
         description="Allowed CORS origins for cross-origin frontend requests.",
     )
@@ -84,12 +85,23 @@ class Settings(BaseSettings):
     @field_validator("cors_origins", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Any) -> List[str]:
-        """Support comma-separated strings for CORS_ORIGINS environment variable."""
+        """Support strings, wildcard, or comma-separated lists for CORS_ORIGINS."""
         if isinstance(v, str):
-            return [i.strip() for i in v.split(",") if i.strip()]
-        elif isinstance(v, list):
-            return v
-        return []
+            clean_v = v.strip()
+            if not clean_v or clean_v == "*":
+                return ["*"]
+            if clean_v.startswith("[") and clean_v.endswith("]"):
+                import json
+                try:
+                    parsed = json.loads(clean_v)
+                    if isinstance(parsed, list):
+                        return [str(i).strip() for i in parsed if str(i).strip()]
+                except Exception:
+                    pass
+            return [i.strip() for i in clean_v.split(",") if i.strip()]
+        elif isinstance(v, (list, tuple, set)):
+            return [str(i).strip() for i in v if str(i).strip()]
+        return ["*"]
 
     @field_validator("environment")
     @classmethod
