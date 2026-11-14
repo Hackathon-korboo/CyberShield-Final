@@ -94,6 +94,9 @@ def create_risk_application() -> FastAPI:
         tags=["System"],
         summary="Application Root & Interactive UI",
     )
+    @app.get("/api/index.py", include_in_schema=False)
+    @app.get("/api/index", include_in_schema=False)
+    @app.get("/api", include_in_schema=False)
     def serve_root(request: Request):
         accept = request.headers.get("accept", "")
         if "application/json" in accept and "text/html" not in accept:
