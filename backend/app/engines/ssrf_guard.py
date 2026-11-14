@@ -187,7 +187,7 @@ class SSRFGuard:
                 ip_addr = sockaddr[0]
                 if ip_addr not in resolved_ips:
                     resolved_ips.append(ip_addr)
-        except socket.gaierror as err:
+        except (socket.gaierror, OSError) as err:
             reason = f"DNS resolution failed for hostname '{hostname}': {err}"
             if raise_exception:
                 raise SSRFProtectionError(reason)
