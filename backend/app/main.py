@@ -101,6 +101,20 @@ def create_application() -> FastAPI:
     # Mount Phase 02 Threat Analysis Routers
     app.include_router(analysis_router, prefix=settings.api_v1_str)
 
+    # Mount Phase 03 AI Augmented Routers
+    from backend.app.api.ai_router import ai_api_router
+    app.include_router(ai_api_router, prefix=settings.api_v1_str)
+
+    # Mount Member 2 AI Threat Intelligence, File Analysis, and Config Routers
+    from backend.app.api.routes.member2_routes import router as member2_router
+    app.include_router(member2_router, prefix=settings.api_v1_str)
+
+    # Mount Stage 4 & 5 Core Scans & Report Routers
+    from backend.app.api.routes.scans import router as scans_router
+    from backend.app.api.routes.unified_report import router as unified_report_router
+    app.include_router(scans_router, prefix=settings.api_v1_str)
+    app.include_router(unified_report_router, prefix=settings.api_v1_str)
+
     # Root Info Endpoint
     @app.get(
         "/",
