@@ -9,6 +9,19 @@ Unified master FastAPI application integrating:
 
 from pathlib import Path
 from datetime import datetime, timezone
+import sys
+import types
+
+# Vercel serverless environment compatibility
+_backend_dir = Path(__file__).resolve().parent.parent
+if "backend" not in sys.modules:
+    backend_pkg = types.ModuleType("backend")
+    backend_pkg.__path__ = [str(_backend_dir)]
+    sys.modules["backend"] = backend_pkg
+
+for _p in [str(_backend_dir), str(_backend_dir.parent)]:
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import HTMLResponse, FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles

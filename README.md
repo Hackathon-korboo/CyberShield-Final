@@ -1,13 +1,43 @@
 # CyberShield-Final — CyberShield AI 2.0
 
 **Next-Generation Multi-Vector Autonomous Cybersecurity & Threat Intelligence Platform**  
-*Team:* **DON'T STOP** | *Adamas Offline Hackathon*
+*Team:* **DON'T STOP** | *Adamas Offline Hackathon* · *Track:* **Cybersecurity & Digital Trust**
 
 ---
 
-## 🛡️ Executive Summary
+## 🌐 Live Platform & Release Links
 
-**CyberShield AI 2.0** is an enterprise-grade, zero-trust cybersecurity threat intelligence platform designed to detect, analyze, and neutralize modern cyber threats across multiple communication vectors. It unifies deterministic heuristics, external threat intelligence feeds, Google Gemini generative AI reasoning, cryptographic tamper-proofing on the Ethereum blockchain, and an interactive 3D WebGL cyber operations dashboard.
+| Resource | URL |
+|---|---|
+| **Production Web Application** | [https://cybershield-ai-web-roan.vercel.app](https://cybershield-ai-web-roan.vercel.app) |
+| **Production Backend API** | [https://cybershield-ai-api.vercel.app](https://cybershield-ai-api.vercel.app) |
+| **Interactive API Documentation (Swagger)** | [https://cybershield-ai-api.vercel.app/docs](https://cybershield-ai-api.vercel.app/docs) |
+| **Formal ReDoc Reference** | [https://cybershield-ai-api.vercel.app/redoc](https://cybershield-ai-api.vercel.app/redoc) |
+| **GitHub Organization Repository** | [https://github.com/Hackathon-korboo/CyberShield-Final](https://github.com/Hackathon-korboo/CyberShield-Final) |
+| **Project Presentation (Slide Deck)** | `ADD_GOOGLE_DRIVE_PRESENTATION_LINK_HERE` |
+
+---
+
+## 🛑 Problem Statement
+
+Modern cyber threats have evolved rapidly beyond traditional malware binaries. Attackers now weaponize human psychology through sophisticated, multi-vector social engineering schemes:
+
+1. **Multi-Vector Threat Proliferation:** Deceptive digital threats arrive across disconnected channels—SMS smishing (electricity bill cutoffs, fake traffic e-challans), targeted email phishing (enterprise credential harvesting), high-pressure chat coercion ("Digital Arrest" CBI intimidation), fake remote job/loan traps, and typosquatted URLs.
+2. **Failure of Conventional Antivirus:** Legacy signature-based endpoint tools inspect files on disk; they cannot parse psychological urgency, manipulative linguistic intent, or evasive web redirection patterns.
+3. **Flaws in Naive LLM Implementations:** Generic AI wrappers suffer from severe privacy vulnerabilities (leaking sensitive user PII to external models), prompt injection susceptibility (attackers instructing the model to return "SAFE"), and hallucinated, non-reproducible risk scores.
+
+---
+
+## 💡 Proposed Solution: CyberShield AI 2.0
+
+**CyberShield AI 2.0** solves these challenges through a defense-in-depth, zero-trust architecture:
+
+- **Multi-Vector Ingestion:** Dedicated specialized analyzers for URLs, SMS, Emails, Raw Text, and Static Files.
+- **Automated PII Minimization:** Real-time sanitization of Aadhaar, PAN, credit card numbers, phone numbers, and UPI IDs *before* any external reasoning.
+- **Prompt Injection Defense:** Multi-layer quarantine isolating system instruction overrides, jailbreaks, and delimiter escapes.
+- **Decoupled AI & Calibrated Scoring:** Google Gemini 2.0 provides deep contextual and linguistic threat reasoning, while an authoritative **Deterministic Risk Engine** computes reproducible, calibrated scores (0–100) using correlation deduplication (`CORRELATION_CONFIG`) and strict severity baselines.
+- **Decentralized Evidence Tamper-Proofing:** Threat report data is hashed using RFC 8785 canonical JSON digests and anchored to an Ethereum smart contract registry (`ThreatReportRegistry.sol`).
+- **Interactive 3D WebGL Command Center:** Real-time cyber operations interface featuring a persistent procedural Three.js robotic jellyfish visualizer, responsive telemetry, and transparent verdict breakdowns.
 
 ---
 
@@ -46,28 +76,31 @@
                                       └─────────────────────────────────────────┘
 ```
 
-### 1. Multi-Vector Security Lab (Member 1 & Member 2)
-- **URL / Web Threat Analyzer:** Comprehensive URL normalization, homoglyph punycode detection, suspicious TLD flagging, deep subdomain inspection, and multi-layer SSRF validation (RFC 1918, RFC 3927 link-local, loopback, and cloud metadata blocking).
-- **SMS / Smishing Intelligence:** Deep pattern recognition for KYC expiration threats, banking suspension lures, electricity bill disconnection extortion, unsolicited lottery prizes, and advance-fee demands.
-- **Email Phishing Defense:** Detects brand impersonation, urgent credential verification deadlines, deceptive account restoration links, and payment fraud lures.
-- **Universal Text Analyzer:** Identifies high-pressure social engineering coercion, "Digital Arrest" intimidation schemes, fake law enforcement threats (CBI, Police, ED), and deceptive UPI QR payment directives.
-- **Safe Static File Inspection:** Safe, non-execution inspection validating MIME types, magic byte headers, SHA-256 hashes, executable disguise evasion, and compressed archive safety (zip bomb & path traversal detection).
+---
 
-### 2. Calibrated Deterministic Risk Scoring & Scam Differentiation
-- **Decoupled AI Architecture:** AI models provide contextual extraction, intent detection, and tactical breakdown without hallucinating arbitrary numerical scores.
-- **Correlation-Based Deduplication:** Indicators are grouped into documented correlation groups (`CORR-OTP-THEFT`, `CORR-ADVANCE-FEE`, `CORR-CREDENTIAL-HARVEST`, `CORR-IMPERSONATION`, `CORR-URGENCY`, `CORR-SUSPICIOUS-LINK`), suppressing score inflation from repetitive or rephrased indicators.
-- **Severity Floor Model:** Calibrated severity baselines guarantee that identical evidence yields identical scores, while distinct scam categories receive evidence-calibrated scores.
-- **Strict Authority Policy:** `CONFIRMED MALICIOUS` status is strictly reserved for verified external threat intelligence matches (e.g. VirusTotal confirmed malicious domains), while synthetic scam patterns are accurately classified as `LIKELY FRAUDULENT MESSAGE` or `SUSPICIOUS`.
+## 🛠️ Technology Stack
 
-### 3. Blockchain Evidence & Trust Registry (Member 3)
-- **RFC 8785 Canonical JSON Hashing:** Produces deterministic, byte-identical SHA-256 evidence digests from threat report payloads.
-- **Smart Contract Registry:** `ThreatReportRegistry.sol` deployed on EVM-compatible networks records scan report hashes, timestamps, reporter identities, and tamper-proof verification states.
-- **Verification Endpoint:** `POST /api/v1/reports/verify` independently validates report integrity against the canonical hash.
+| Layer | Technologies |
+|---|---|
+| **Backend Core** | Python 3.13 / 3.12, FastAPI 0.115+, Starlette, Pydantic v2, Pydantic-Settings |
+| **AI Intelligence** | Google Gemini 2.0 API (`google-genai`), Zero-Downtime Deterministic Fallback Engine |
+| **External Threat Intel** | VirusTotal v3 REST API, Google Safe Browsing Adapter |
+| **Privacy & Security** | Regex & Token PII Redactor (PAN/Aadhaar/Cards/UPI), Prompt Injection Shield |
+| **Blockchain & Trust** | Solidity (`ThreatReportRegistry.sol`), Web3.py, RFC 8785 Canonical JSON Hasher |
+| **Frontend UI/UX** | Pure HTML5, CSS3 Custom Properties, Modern JavaScript (ES6+), Three.js r128 (WebGL) |
+| **Testing & Quality** | Pytest 9.2+, Pytest-Asyncio, HTTPX TestClient (245 Automated Tests) |
+| **Hosting & DevOps** | Vercel Serverless Functions (FastAPI Python Runtime), GitHub Actions / CI |
 
-### 4. Interactive 3D Cyber Operations Dashboard (Member 4)
-- **WebGL Dynamic Scene:** Built with pure HTML5/CSS3/ES6 and Three.js, rendering a responsive real-time cybersecurity command center.
-- **5 Dedicated Input Modes:** Independent panels for URL, SMS, Email, Text, and File analysis with 1-click clipboard paste, input clearing, format validators, and live test presets.
-- **Transparent Verdict Cards:** Real-time presentation of risk level, calibrated score, detected threat category, "Why this score?" breakdown, AI confidence, and mitigation advice.
+---
+
+## 👥 Hackathon Team — DON'T STOP
+
+| Member | Module & Responsibility | Status |
+|---|---|---|
+| **Member 1** | **Backend Foundation & Deterministic Security Architecture:** Core FastAPI foundation, deterministic scoring pipeline, SSRF defense, SQLite persistence, and Parts 01–22 security engine. | **Active & Integrated** |
+| **Member 2 (Lead)** | **AI Scam Intelligence & Threat Intelligence Service:** Dual-engine Gemini 2.0 integration, PII redaction, prompt injection guard, VirusTotal enrichment, and static file inspection. | **Active & Integrated** |
+| **Member 3** | **Blockchain Trust & Cryptographic Verification:** Smart contract registry (`ThreatReportRegistry.sol`), RFC 8785 canonical JSON hashing, and evidence tamper-proofing. | **Active & Integrated** |
+| **Member 4** | **Frontend Experience & 3D WebGL Command Center:** Cyberpunk operations UI, persistent procedural Three.js jellyfish background, responsive lab controls, and live telemetry. | **Active & Integrated** |
 
 ---
 
@@ -75,7 +108,7 @@
 
 ### Prerequisites
 - Windows 10/11, Linux, or macOS
-- Python 3.10, 3.11, or 3.12
+- Python 3.11, 3.12, or 3.13
 - Google Chrome, Edge, or modern web browser
 
 ### One-Click Windows Launchers
@@ -139,25 +172,25 @@ ENFORCE_ZERO_TRUST_VALIDATION=true
 
 | Endpoint | Method | Description |
 |---|---|---|
-| `http://127.0.0.1:8000/` | GET | Interactive Web Application & Security Lab |
-| `http://127.0.0.1:8000/docs` | GET | Interactive Swagger UI API Explorer |
-| `http://127.0.0.1:8000/redoc` | GET | Formal ReDoc API Reference |
-| `http://127.0.0.1:8000/api/v1/health` | GET | Full Subsystem Telemetry & Health Probe |
-| `http://127.0.0.1:8000/api/v1/analyze/text` | POST | Evidence-Based Scam & Threat Analysis (SMS/Email/Text) |
-| `http://127.0.0.1:8000/api/v1/analyze/file` | POST | Safe Static Non-Execution File & Archive Inspection |
-| `http://127.0.0.1:8000/api/v1/scan-url` | POST | Core URL Analysis & Unified Threat Report Pipeline |
-| `http://127.0.0.1:8000/api/v1/reports/verify` | POST | RFC 8785 Canonical Hash & Blockchain Verification |
-| `http://127.0.0.1:8000/api/v1/config/providers` | GET | Live Provider Connectivity & Quota Telemetry |
+| `/` | GET | Interactive Web Application & Security Lab |
+| `/docs` | GET | Interactive Swagger UI API Explorer |
+| `/redoc` | GET | Formal ReDoc API Reference |
+| `/api/v1/health` | GET | Full Subsystem Telemetry & Health Probe |
+| `/api/v1/analyze/text` | POST | Evidence-Based Scam & Threat Analysis (SMS/Email/Text) |
+| `/api/v1/analyze/file` | POST | Safe Static Non-Execution File & Archive Inspection |
+| `/api/v1/scan-url` | POST | Core URL Analysis & Unified Threat Report Pipeline |
+| `/api/v1/reports/verify` | POST | RFC 8785 Canonical Hash & Blockchain Verification |
+| `/api/v1/config/providers` | GET | Live Provider Connectivity & Quota Telemetry |
 
 ---
 
 ## 🧪 Comprehensive Regression Testing
 
-The platform includes 245+ automated unit, integration, and security tests.
+The platform includes 245 automated unit, integration, and security tests.
 
 To run the complete test suite:
 ```cmd
-backend\venv\Scripts\activate.bat
+.venv\Scripts\activate.bat
 pytest backend/tests -v
 ```
 
@@ -175,12 +208,3 @@ pytest backend/tests -v
 - **Zero-Trust Input Handling:** Every payload is treated as untrusted, sanitized, and boundary-checked.
 - **Real-Time PII Minimization:** Phone numbers, email addresses, and financial identifiers are redacted prior to external AI reasoning.
 - **Zero Secrets in Code:** Actual credentials and `.env` files are strictly excluded from version control via hardened `.gitignore`.
-
----
-
-## 👥 Hackathon Team — DON'T STOP
-
-- **Member 1:** Backend Foundation, Deterministic Security Architecture & Parts 01–22 Engine
-- **Member 2:** Threat Intelligence Service, File Inspection, Gemini AI & VirusTotal Integration
-- **Member 3:** Blockchain Registry, Canonical Hashing & Evidence Tamper-Proofing
-- **Member 4:** Frontend UI/UX, Three.js 3D WebGL Dashboard & Security Lab Controls
