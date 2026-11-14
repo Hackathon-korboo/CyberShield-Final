@@ -87,6 +87,15 @@ def create_risk_application() -> FastAPI:
     # Remove existing root route from base app to enable dual HTML / JSON root resolution
     app.router.routes = [r for r in app.router.routes if getattr(r, "path", None) != "/"]
 
+    @app.get("/_debug/scope", include_in_schema=False)
+    def debug_scope(request: Request):
+        return {
+            "path": request.scope.get("path"),
+            "raw_path": str(request.scope.get("raw_path")),
+            "headers": {k.decode("latin1"): v.decode("latin1") for k, v in request.scope.get("headers", [])},
+            "query_string": str(request.scope.get("query_string")),
+        }
+
     @app.get(
         "/",
         response_model=StandardResponse[dict],
