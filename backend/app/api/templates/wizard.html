@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberShield AI 2.0 — API Connection & Credential Wizard</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --card-hover: #1e293b;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --primary: #06b6d4;
+      --primary-hover: #0891b2;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --badge-bg: #1e293b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 860px;
+    }
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .brand-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .brand-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .security-notice {
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+    .security-notice strong { color: #38bdf8; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+      transition: border-color 0.2s ease;
+    }
+    .card:hover { border-color: #374151; }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .provider-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+    .badge-required { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-optional { background: rgba(156, 163, 175, 0.15); color: #9ca3af; border: 1px solid rgba(156, 163, 175, 0.3); }
+    .badge-connected { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-failed { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-unconfigured { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .purpose-desc {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+    .terms-notice {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      background: #0f172a;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--primary);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .input-wrapper {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    input[type="password"], input[type="text"] {
+      flex: 1;
+      background: #0b0f19;
+      border: 1px solid #374151;
+      color: #f3f4f6;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--primary); }
+    .btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .btn-secondary {
+      background: #1f2937;
+      color: #e5e7eb;
+      border: 1px solid #374151;
+    }
+    .btn-secondary:hover { background: #374151; }
+    .btn-primary {
+      background: var(--primary);
+      color: #0b0f19;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #374151;
+      color: #9ca3af;
+    }
+    .btn-outline:hover { background: #1e293b; color: #fff; }
+    .status-panel {
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      display: none;
+      line-height: 1.4;
+    }
+    .status-panel.active { display: block; }
+    .status-panel.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+    .status-panel.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; }
+    .status-panel.warning { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #fde68a; }
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+    }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #111827;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+      z-index: 50;
+      font-size: 0.9rem;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .key-hint {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 0.35rem;
+      display: flex;
+      justify-content: space-between;
+    }
+    .key-hint a { color: var(--primary); text-decoration: none; }
+    .key-hint a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand-title">CyberShield AI 2.0</div>
+    <div class="brand-subtitle">Member 2 — API Connection & Credential Setup Wizard</div>
+  </header>
+
+  <div class="security-notice">
+    <div style="font-size: 1.25rem;">🔒</div>
+    <div>
+      <strong>Zero-Trust Credential Security</strong>: All API keys are saved exclusively into the local 
+      <code>D:\My Created Projects\new member 2\.env</code> file. Credentials are never transmitted to unauthorized 
+      endpoints, never logged in plaintext, never exposed to client-side scripts, and completely excluded from Git via <code>.gitignore</code>.
+    </div>
+  </div>
+
+  <!-- Provider 1: Google Gemini (REQUIRED) -->
+  <div class="card" id="card-gemini">
+    <div class="card-header">
+      <div class="provider-title">
+        <span>Google Gemini API</span>
+        <span class="badge badge-required">Required</span>
+      </div>
+      <div id="badge-gemini" class="badge badge-unconfigured">Loading...</div>
+    </div>
+    <p class="purpose-desc">
+      Powers core AI scam analysis, phishing email detection, SMS smishing classification, fake job detection, deep threat reasoning, and evidence-based mitigation recommendations.
+    </p>
+    <div class="terms-notice">
+      ⚡ <strong>High-Availability Resilience</strong>: If unconfigured, quota-exhausted (HTTP 429), or offline, CyberShield automatically fails over to the local deterministic Heuristic Engine with 0% downtime.
+    </div>
+    <div class="form-group">
+      <div class="input-wrapper">
+        <input type="password" id="key-gemini" placeholder="Enter GEMINI_API_KEY (AIzaSy...)" autocomplete="off">
+        <button type="button" class="btn btn-outline" onclick="toggleVisibility('key-gemini')">👁️</button>
+        <button type="button" class="btn btn-secondary" onclick="testProvider('gemini')">Test Connection</button>
+      </div>
+      <div class="key-hint">
+        <span id="masked-gemini">Current: Not set</span>
+        <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Get Gemini API Key &rarr;</a>
+      </div>
+    </div>
+    <div id="status-gemini" class="status-panel"></div>
+  </div>
+
+  <!-- Provider 2: VirusTotal (OPTIONAL) -->
+  <div class="card" id="card-virustotal">
+    <div class="card-header">
+      <div class="provider-title">
+        <span>VirusTotal API (v3)</span>
+        <span class="badge badge-optional">Optional 1</span>
+      </div>
+      <div id="badge-virustotal" class="badge badge-unconfigured">Loading...</div>
+    </div>
+    <p class="purpose-desc">
+      Provides global malware intelligence, file hash reputation lookups, and suspicious URL threat scoring.
+    </p>
+    <div class="terms-notice">
+      🛡️ <strong>Privacy Protection Guarantee</strong>: Private user files are <em>never</em> uploaded automatically. Queries are strictly read-only against pre-computed cryptographic hashes and public IP/URL reputations.
+    </div>
+    <div class="form-group">
+      <div class="input-wrapper">
+        <input type="password" id="key-virustotal" placeholder="Enter VIRUSTOTAL_API_KEY" autocomplete="off">
+        <button type="button" class="btn btn-outline" onclick="toggleVisibility('key-virustotal')">👁️</button>
+        <button type="button" class="btn btn-secondary" onclick="testProvider('virustotal')">Test Connection</button>
+      </div>
+      <div class="key-hint">
+        <span id="masked-virustotal">Current: Not set</span>
+        <a href="https://www.virustotal.com/gui/my-apikey" target="_blank" rel="noopener">Get VirusTotal API Key &rarr;</a>
+      </div>
+    </div>
+    <div id="status-virustotal" class="status-panel"></div>
+  </div>
+
+  <!-- Provider 3: Google Safe Browsing (OPTIONAL) -->
+  <div class="card" id="card-safebrowsing">
+    <div class="card-header">
+      <div class="provider-title">
+        <span>Google Safe Browsing (v4)</span>
+        <span class="badge badge-optional">Optional 2</span>
+      </div>
+      <div id="badge-safebrowsing" class="badge badge-unconfigured">Loading...</div>
+    </div>
+    <p class="purpose-desc">
+      Queries Google's constantly updated blacklist of malware, social engineering, and unwanted software websites.
+    </p>
+    <div class="terms-notice">
+      ⚖️ <strong>Terms Notice</strong>: Use strictly in accordance with Google Safe Browsing non-commercial terms. For commercial deployments, evaluate Google Cloud Web Risk separately.
+    </div>
+    <div class="form-group">
+      <div class="input-wrapper">
+        <input type="password" id="key-safebrowsing" placeholder="Enter GOOGLE_SAFE_BROWSING_API_KEY" autocomplete="off">
+        <button type="button" class="btn btn-outline" onclick="toggleVisibility('key-safebrowsing')">👁️</button>
+        <button type="button" class="btn btn-secondary" onclick="testProvider('safebrowsing')">Test Connection</button>
+      </div>
+      <div class="key-hint">
+        <span id="masked-safebrowsing">Current: Not set</span>
+        <a href="https://console.cloud.google.com/apis/library/safebrowsing.googleapis.com" target="_blank" rel="noopener">Get Safe Browsing Key &rarr;</a>
+      </div>
+    </div>
+    <div id="status-safebrowsing" class="status-panel"></div>
+  </div>
+
+  <div class="actions-bar">
+    <div>
+      <button type="button" class="btn btn-outline" onclick="skipOptional()">Skip Optional APIs</button>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <button type="button" class="btn btn-secondary" onclick="testAll()">Test All Configured</button>
+      <button type="button" class="btn btn-primary" onclick="saveConfiguration()">Save & Apply Configuration</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function toggleVisibility(inputId) {
+    const el = document.getElementById(inputId);
+    el.type = el.type === 'password' ? 'text' : 'password';
+  }
+
+  async function loadInitialStatus() {
+    try {
+      const res = await fetch('/api/v1/config/providers');
+      const data = await res.json();
+      data.providers.forEach(p => {
+        updateProviderUI(p.provider_id, p.is_configured ? 'CONFIGURED' : 'NOT_CONFIGURED', p.masked_key, null);
+      });
+    } catch (e) {
+      console.error("Error loading status:", e);
+    }
+  }
+
+  function updateProviderUI(id, status, maskedKey, message) {
+    const badge = document.getElementById(`badge-${id}`);
+    const statusPanel = document.getElementById(`status-${id}`);
+    const maskedSpan = document.getElementById(`masked-${id}`);
+
+    if (maskedKey) {
+      maskedSpan.innerText = `Saved: ${maskedKey}`;
+    }
+
+    badge.className = 'badge';
+    statusPanel.className = 'status-panel';
+
+    if (status === 'CONNECTED') {
+      badge.classList.add('badge-connected');
+      badge.innerText = 'Connected';
+      statusPanel.classList.add('active', 'success');
+      statusPanel.innerText = message || 'Connection verified successfully.';
+    } else if (status === 'CONNECTION_FAILED') {
+      badge.classList.add('badge-failed');
+      badge.innerText = 'Connection Failed';
+      statusPanel.classList.add('active', 'error');
+      statusPanel.innerText = message || 'Connection test failed. Check key validity.';
+    } else if (status === 'CONFIGURED') {
+      badge.classList.add('badge-optional');
+      badge.innerText = 'Configured (Untested)';
+      statusPanel.classList.remove('active');
+    } else {
+      badge.classList.add('badge-unconfigured');
+      badge.innerText = 'Not Configured';
+      statusPanel.classList.remove('active');
+    }
+  }
+
+  async function testProvider(id) {
+    const keyInput = document.getElementById(`key-${id}`);
+    const key = keyInput.value.trim();
+    const badge = document.getElementById(`badge-${id}`);
+    badge.innerText = 'Testing...';
+
+    try {
+      const res = await fetch('/api/v1/config/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider_id: id, api_key: key })
+      });
+      const data = await res.json();
+      updateProviderUI(id, data.status, null, data.message);
+      showToast(`${id.toUpperCase()}: ${data.status}`);
+    } catch (e) {
+      updateProviderUI(id, 'CONNECTION_FAILED', null, 'Failed to reach test endpoint.');
+    }
+  }
+
+  async function testAll() {
+    await testProvider('gemini');
+    await testProvider('virustotal');
+    await testProvider('safebrowsing');
+  }
+
+  function skipOptional() {
+    document.getElementById('key-virustotal').value = '';
+    document.getElementById('key-safebrowsing').value = '';
+    updateProviderUI('virustotal', 'NOT_CONFIGURED', '', null);
+    updateProviderUI('safebrowsing', 'NOT_CONFIGURED', '', null);
+    showToast('Optional APIs skipped. System will use local Heuristic and static engines.');
+  }
+
+  async function saveConfiguration() {
+    const geminiKey = document.getElementById('key-gemini').value.trim();
+    const vtKey = document.getElementById('key-virustotal').value.trim();
+    const sbKey = document.getElementById('key-safebrowsing').value.trim();
+
+    try {
+      const res = await fetch('/api/v1/config/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gemini_api_key: geminiKey || null,
+          virustotal_api_key: vtKey || null,
+          google_safebrowsing_api_key: sbKey || null
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('Configuration saved to local .env successfully!');
+        // Clear plaintext inputs for security and refresh masked preview
+        document.getElementById('key-gemini').value = '';
+        document.getElementById('key-virustotal').value = '';
+        document.getElementById('key-safebrowsing').value = '';
+        await loadInitialStatus();
+      } else {
+        alert('Failed to save configuration: ' + data.message);
+      }
+    } catch (e) {
+      alert('Error saving configuration: ' + e.message);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadInitialStatus);
+</script>
+
+</body>
+</html>

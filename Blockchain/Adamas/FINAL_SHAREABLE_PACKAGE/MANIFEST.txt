@@ -1,0 +1,47 @@
+CYBERSHIELD AI 2.0 — PACKAGE MANIFEST
+=====================================
+Generated At: 2026-11-14T10:00:00+05:30
+Archive Name: CyberShield_AI_2.0_Final_Handover.zip
+Total Packaged Files: 35
+Archive Size: 81,482 bytes
+Archive SHA-256: f6401b2c944c2757d940d65159a14e6aec4402a4ecf745118a07514f39f68f7b
+
+PACKAGED FILES BREAKDOWN:
+--------------------------------------------------------------------------------------------------------------------
+Category        | Size       | Relative Path                              | SHA-256 (first 16) | Source
+--------------------------------------------------------------------------------------------------------------------
+artifacts       | 16198      | artifacts/ThreatReportRegistry.json        | 190bb63cd7a401dd.. | E:\Adamas\artifacts\ThreatReportRegistry.json
+backend         | 1139       | backend/README_BACKEND.md                  | 5c827ab705d75338.. | [GENERATED / TEMPLATE]
+backend         | 3788       | backend/integration_snippets.py            | 4fdf56d369448750.. | [GENERATED / TEMPLATE]
+configuration   | 952        | configuration/.env.example                 | 486f150640c37e12.. | [GENERATED / TEMPLATE]
+configuration   | 167        | configuration/deployment.json              | 3054ef25e532269b.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\deployment.json
+configuration   | 704        | configuration/hardhat.config.js            | eebd2b4374e7377f.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\hardhat.config.js
+configuration   | 574        | configuration/package.json                 | 8fcd5701bb6ec235.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\package.json
+configuration   | 189        | configuration/requirements.txt             | bbd2e5d53c9c5bf7.. | [GENERATED / TEMPLATE]
+configuration   | 1346       | configuration/scripts/deploy.js            | 6034049c41e4281a.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\scripts\deploy.js
+contracts       | 9700       | contracts/ThreatReportRegistry.sol         | bc8b5b82199050be.. | E:\Adamas\contracts\ThreatReportRegistry.sol
+documentation   | 12013      | docs/BLOCKCHAIN_INTEGRATION.md             | b4a702d17e210918.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\BLOCKCHAIN_INTEGRATION.md
+documentation   | 9020       | docs/MEMBER3_FINAL_AUDIT_REPORT.md         | cbe2067ea15bb66b.. | E:\Adamas\docs\MEMBER3_FINAL_AUDIT_REPORT.md
+documentation   | 8059       | docs/MEMBER3_FINAL_HANDOVER.md             | 85594bb25274a940.. | E:\Adamas\docs\MEMBER3_FINAL_HANDOVER.md
+documentation   | 9258       | docs/MEMBER3_INTEGRATION_GUIDE.md          | 646a1ef00dd4242b.. | E:\Adamas\docs\MEMBER3_INTEGRATION_GUIDE.md
+documentation   | 7626       | docs/MEMBER3_KNOWN_LIMITATIONS.md          | 441eab148acbabfc.. | E:\Adamas\docs\MEMBER3_KNOWN_LIMITATIONS.md
+documentation   | 8488       | docs/MEMBER3_SECURITY_CHECKLIST.md         | 476f8d511158b991.. | E:\Adamas\docs\MEMBER3_SECURITY_CHECKLIST.md
+documentation   | 12367      | docs/MEMBER3_TEST_RESULTS.md               | 6658715bc7f35b33.. | E:\Adamas\docs\MEMBER3_TEST_RESULTS.md
+documentation   | 11312      | docs/SECURITY_TEST_RESULTS.md              | 275895945481a786.. | E:\Adamas\docs\SECURITY_TEST_RESULTS.md
+documentation   | 9278       | docs/THREAT_MODEL.md                       | cb5f7125030520a3.. | E:\Adamas\docs\THREAT_MODEL.md
+frontend        | 655        | frontend/README_FRONTEND.md                | 4abdd6277211baf1.. | [GENERATED / TEMPLATE]
+frontend        | 1353       | frontend/components/IntegrityBadge.tsx     | b6d100839bd8a77a.. | [GENERATED / TEMPLATE]
+frontend        | 588        | frontend/types/integrity.ts                | a0ec65c6f7395268.. | [GENERATED / TEMPLATE]
+root            | 5181       | README.md                                  | 58e0fa34888ba5a3.. | E:\Adamas\README.md
+root            | 3883       | run_security_suite.py                      | b95616740eb8eaa5.. | E:\Adamas\run_security_suite.py
+security        | 1004       | security/__init__.py                       | d6a321442f43c618.. | E:\Adamas\security\__init__.py
+security        | 22274      | security/blockchain_adapter.py             | cd4850e6e9b4c803.. | E:\Adamas\security\blockchain_adapter.py
+security        | 14888      | security/evidence_hasher.py                | 3c1e10a36027563a.. | E:\Adamas\security\evidence_hasher.py
+security        | 26774      | security/ssrf_validator.py                 | 0f5526ea6bb07a9a.. | E:\Adamas\security\ssrf_validator.py
+tests           | 7207       | tests/ThreatReportRegistry.test.js         | b5b9631148cd9612.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\test\ThreatReportRegistry.test.js
+tests           | 71         | tests/__init__.py                          | d364807437b63c55.. | E:\Adamas\tests\__init__.py
+tests           | 5471       | tests/hash_consistency.mjs                 | 92b29b3ed9b1dba3.. | E:\1st Project\Medi\Medi\CyberShield-Blockchain\test\hash_consistency.mjs
+tests           | 5553       | tests/test_api_contract.py                 | 7d5d1b85df56cb7b.. | E:\Adamas\tests\test_api_contract.py
+tests           | 7130       | tests/test_blockchain.py                   | 974a3d8d99dd24fc.. | E:\Adamas\tests\test_blockchain.py
+tests           | 9083       | tests/test_cryptography.py                 | dd60e9f0906f895d.. | E:\Adamas\tests\test_cryptography.py
+tests           | 16174      | tests/test_ssrf_security.py                | 5b74758fdb87f926.. | E:\Adamas\tests\test_ssrf_security.py

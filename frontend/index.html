@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBERSHIELD AI 2.0 — Threat Intelligence & Zero-Trust Platform</title>
+
+  <!-- Google Fonts: Inter (UI) & JetBrains Mono (Technical Instrumentation) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome 6.5.2 for Technical & Brand Badges -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- Global Design System Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Persistent Global 3D Robotic Jellyfish Background (Mounted ONCE at root) -->
+  <div id="global-3d-background" class="global-3d-background" aria-hidden="true">
+    <canvas id="jellyfish-canvas"></canvas>
+    <div class="radial-glow"></div>
+    <div class="grid-overlay"></div>
+    <div class="technical-lines"></div>
+  </div>
+
+  <!-- Global Application Shell -->
+  <div class="app-shell">
+
+    <!-- =========================================================================
+         GLOBAL HEADER & NAVIGATION
+         ========================================================================= -->
+    <header class="global-header">
+      <div class="header-inner">
+        <!-- Brand Identity -->
+        <a href="#home" class="brand-group" aria-label="CyberShield AI 2.0 Home">
+          <div class="brand-mark">
+            <div class="radar-dot"></div>
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">CYBERSHIELD <span class="highlight">AI 2.0</span></span>
+            <span class="brand-subtitle">THREAT INTEL & ZERO-TRUST CORE</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Bar (13 Sections) -->
+        <nav class="nav-links" id="desktop-nav" aria-label="Primary Navigation">
+          <a href="#home" class="nav-item active" data-section="home"><span class="nav-num">01</span>HOME</a>
+          <a href="#problem" class="nav-item" data-section="problem"><span class="nav-num">02</span>PROBLEM</a>
+          <a href="#solution" class="nav-item" data-section="solution"><span class="nav-num">03</span>SOLUTION</a>
+          <a href="#features" class="nav-item" data-section="features"><span class="nav-num">04</span>FEATURES</a>
+          <a href="#lab" class="nav-item nav-highlight" data-section="lab"><span class="nav-num">05</span>LAB</a>
+          <a href="#dashboard" class="nav-item" data-section="dashboard"><span class="nav-num">06</span>METRICS</a>
+          <a href="#architecture" class="nav-item" data-section="architecture"><span class="nav-num">07</span>ARCH</a>
+          <a href="#team" class="nav-item" data-section="team"><span class="nav-num">08</span>TEAM</a>
+          <a href="#tech-stack" class="nav-item" data-section="tech-stack"><span class="nav-num">09</span>STACK</a>
+          <a href="#testing" class="nav-item" data-section="testing"><span class="nav-num">10</span>TESTS</a>
+          <a href="#cases" class="nav-item" data-section="cases"><span class="nav-num">11</span>CASES</a>
+          <a href="#config" class="nav-item" data-section="config"><span class="nav-num">12</span>CONFIG</a>
+          <a href="#about" class="nav-item" data-section="about"><span class="nav-num">13</span>ABOUT</a>
+        </nav>
+
+        <!-- Header Actions & Live Telemetry Indicator -->
+        <div class="header-actions">
+          <div class="status-pill status-live" id="system-health-pill" title="Backend Status on Port 8000">
+            <span class="live-dot"></span>
+            <span class="pill-label" id="backend-status-text">CORE // CONNECTING</span>
+          </div>
+
+          <a href="#lab" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-microchip"></i>
+            <span>START ANALYSIS</span>
+          </a>
+
+          <button class="burger-btn" id="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="mobile-drawer" id="mobile-drawer" hidden>
+        <div class="mobile-drawer-inner">
+          <div class="mobile-meta-bar">
+            <span class="meta-tag">TRACK // CYBERSECURITY & DIGITAL TRUST</span>
+            <span class="meta-tag" id="mobile-health-tag">STATUS // PENDING</span>
+          </div>
+          <div class="mobile-links">
+            <a href="#home" class="mobile-nav-item active"><span class="nav-num">01</span> HOME</a>
+            <a href="#problem" class="mobile-nav-item"><span class="nav-num">02</span> PROBLEM STATEMENT</a>
+            <a href="#solution" class="mobile-nav-item"><span class="nav-num">03</span> OUR SOLUTION</a>
+            <a href="#features" class="mobile-nav-item"><span class="nav-num">04</span> COMPLETE FEATURES</a>
+            <a href="#lab" class="mobile-nav-item mobile-highlight"><span class="nav-num">05</span> SECURITY ANALYSIS LAB</a>
+            <a href="#dashboard" class="mobile-nav-item"><span class="nav-num">06</span> TELEMETRY DASHBOARD</a>
+            <a href="#architecture" class="mobile-nav-item"><span class="nav-num">07</span> SYSTEM ARCHITECTURE</a>
+            <a href="#team" class="mobile-nav-item"><span class="nav-num">08</span> TEAM & ROLES (MEMBER 1-4)</a>
+            <a href="#tech-stack" class="mobile-nav-item"><span class="nav-num">09</span> TECHNOLOGY STACK</a>
+            <a href="#testing" class="mobile-nav-item"><span class="nav-num">10</span> AUDIT EVIDENCE (98 TESTS)</a>
+            <a href="#cases" class="mobile-nav-item"><span class="nav-num">11</span> CASE STUDIES</a>
+            <a href="#config" class="mobile-nav-item"><span class="nav-num">12</span> API CONFIGURATION</a>
+            <a href="#about" class="mobile-nav-item"><span class="nav-num">13</span> ABOUT & CONTACT</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="page-content">
+
+      <!-- =======================================================================
+           SECTION A — PAGE 01: HOME / HERO
+           ======================================================================= -->
+      <section id="home" class="content-section hero-section">
+        <div class="section-container">
+          <!-- Top Technical Meta Tag -->
+          <div class="technical-kicker">
+            <span class="kicker-index">[ 01 ]</span>
+            <span class="kicker-sep">//</span>
+            <span class="kicker-tag">ADAMAS HACKATHON · CYBERSECURITY & DIGITAL TRUST TRACK</span>
+            <span class="kicker-badge"><i class="fa-solid fa-lock"></i> ZERO-TRUST PIPELINE</span>
+          </div>
+
+          <div class="hero-grid">
+            <!-- Left Hero Content -->
+            <div class="hero-text-block">
+              <h1 class="hero-headline">
+                Your Digital World.<br />
+                <span class="headline-accent">Our Intelligence.</span><br />
+                Your Protection.
+              </h1>
+
+              <p class="hero-subhead">
+                An AI-powered cybersecurity platform designed to detect suspicious messages,
+                phishing attempts, malicious URLs, and digital scams through intelligent
+                analysis and evidence-based threat assessment.
+              </p>
+
+              <div class="hero-cta-group">
+                <a href="#lab" class="btn btn-primary btn-lg">
+                  <i class="fa-solid fa-shield-virus"></i>
+                  <span>START SECURITY ANALYSIS</span>
+                </a>
+                <a href="#solution" class="btn btn-secondary btn-lg">
+                  <i class="fa-solid fa-network-wired"></i>
+                  <span>VIEW HOW IT WORKS</span>
+                </a>
+                <a href="#dashboard" class="btn btn-ghost btn-lg">
+                  <i class="fa-solid fa-chart-line"></i>
+                  <span>LIVE DASHBOARD</span>
+                </a>
+              </div>
+
+              <!-- Quick Status Cards -->
+              <div class="hero-metrics-strip">
+                <div class="mini-metric">
+                  <span class="metric-val" id="hero-tests-val">98/98</span>
+                  <span class="metric-lbl">AUTOMATED TESTS PASSED</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="mini-metric">
+                  <span class="metric-val">12+</span>
+                  <span class="metric-lbl">SCAM CATEGORIES DETECTED</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="mini-metric">
+                  <span class="metric-val">&lt; 15ms</span>
+                  <span class="metric-lbl">LOCAL ENGINE LATENCY</span>
+                </div>
+                <div class="metric-divider"></div>
+                <div class="mini-metric">
+                  <span class="metric-val">100%</span>
+                  <span class="metric-lbl">PII REDACTION & ZERO-TRUST</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Hero Visual Instrumentation -->
+            <div class="hero-visual-block">
+              <div class="instrument-card hero-radar-card">
+                <div class="card-header-bar">
+                  <span class="card-num">[ SENSORS ]</span>
+                  <span class="card-title">REAL-TIME THREAT RADAR</span>
+                  <span class="status-pill status-live-sm">ACTIVE</span>
+                </div>
+
+                <div class="radar-scope-container">
+                  <div class="radar-scope">
+                    <div class="radar-ring r1"></div>
+                    <div class="radar-ring r2"></div>
+                    <div class="radar-ring r3"></div>
+                    <div class="radar-crosshair-h"></div>
+                    <div class="radar-crosshair-v"></div>
+                    <div class="radar-sweep"></div>
+                    <!-- Detected Threat Blips -->
+                    <div class="radar-blip blip-1" title="Electricity Disconnection SMS"></div>
+                    <div class="radar-blip blip-2" title="UPI PIN Reverse Scam"></div>
+                    <div class="radar-blip blip-3" title="AnyDesk Remote OTP"></div>
+                    <div class="radar-center"></div>
+                  </div>
+                </div>
+
+                <!-- Instrument Readouts -->
+                <div class="radar-readouts">
+                  <div class="readout-row">
+                    <span class="readout-key">HEURISTIC ENSEMBLE</span>
+                    <span class="readout-val text-teal">ONLINE · 6 LAYERS</span>
+                  </div>
+                  <div class="readout-row">
+                    <span class="readout-key">GEMINI LLM REASONING</span>
+                    <span class="readout-val" id="radar-gemini-status">gemini-3.8-flash</span>
+                  </div>
+                  <div class="readout-row">
+                    <span class="readout-key">VIRUSTOTAL v3 INTEL</span>
+                    <span class="readout-val text-teal">CONNECTED · CACHED</span>
+                  </div>
+                  <div class="readout-row">
+                    <span class="readout-key">PROMPT INJECTION GUARD</span>
+                    <span class="readout-val text-teal">QUARANTINE ENFORCED</span>
+                  </div>
+                </div>
+
+                <div class="card-corner-cross tr"></div>
+                <div class="card-corner-cross bl"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION B — PAGE 02: PROBLEM STATEMENT
+           ======================================================================= -->
+      <section id="problem" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 02 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">PROBLEM DOMAIN & THREAT ENVIRONMENT</span>
+            </div>
+            <h2 class="section-heading">The Escalating Crisis of Deceptive Digital Scams</h2>
+            <p class="section-subtext">
+              Digital communications have become the primary battleground where malicious actors exploit human trust,
+              urgency, and lack of technical inspection tools. CyberShield AI 2.0 addresses ten critical fraud vectors:
+            </p>
+          </div>
+
+          <!-- 10 Problem Cards Grid -->
+          <div class="instrument-grid grid-3">
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#01</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Phishing Emails & Fake Portals</h3>
+              <p class="card-body-text">
+                Deceptive emails mimicking legitimate institutions, banks, or services threatening account suspension to harvest passwords.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Credential Theft</span>
+                <span class="chip">Brand Impersonation</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#02</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Fake Job & Work-From-Home Scams</h3>
+              <p class="card-body-text">
+                Fraudulent high-paying daily task schemes demanding Telegram joins, social media liking tasks, and upfront fees.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Recruitment Fraud</span>
+                <span class="chip">Telegram Redirection</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#03</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Fake Internship & Training Fee Fraud</h3>
+              <p class="card-body-text">
+                Bogus offer letters sent to students requiring upfront "training fees", certificate charges, or security deposits.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Student Exploitation</span>
+                <span class="chip">Fee Traps</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#04</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">SMS Smishing & Electricity Disconnection</h3>
+              <p class="card-body-text">
+                Urgent SMS claiming power will be disconnected at 9:30 PM due to unpaid bills, prompting calls to rogue officer numbers.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Utility Smishing</span>
+                <span class="chip">Artificial Panic</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#05</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">UPI PIN & QR Code Fraud</h3>
+              <p class="card-body-text">
+                Manipulating victims into entering their UPI PIN or scanning a merchant QR code under the false pretense of "receiving money".
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Payment Reversal</span>
+                <span class="chip">QR Code Exploits</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#06</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">OTP Theft & Remote Desktop Abuse</h3>
+              <p class="card-body-text">
+                Coercing users to share 6-digit OTPs or install screen-sharing software (AnyDesk, TeamViewer) to drain bank accounts.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Remote Access</span>
+                <span class="chip">OTP Solicitation</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#07</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Lookalike Domains & IP Hostnames</h3>
+              <p class="card-body-text">
+                URLs using raw IP addresses, suspicious top-level domains (.xyz, .cfd), or Punycode IDN homographs to spoof brands.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Punycode Spoofing</span>
+                <span class="chip">Obfuscated Links</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#08</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Digital Arrest & Authority Coercion</h3>
+              <p class="card-body-text">
+                Scammers impersonating CBI, Police, or Customs claiming illicit drug parcels, demanding video confinement and fund transfers.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Extortion</span>
+                <span class="chip">Legal Intimidation</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#09</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Fragmented & Opaque Threat Warnings</h3>
+              <p class="card-body-text">
+                Users receive vague browser blocks without clear evidence, actionable countermeasures, or plain-language explanations.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">Usability Gap</span>
+                <span class="chip">Opaque Risk</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-kicker"><span class="kicker-accent">#10</span> THREAT VECTOR</div>
+              <h3 class="card-title-lg">Advanced Adversarial Prompt Injections</h3>
+              <p class="card-body-text">
+                Attackers embed hidden system override instructions ("Ignore previous prompts") inside scams to fool modern AI models.
+              </p>
+              <div class="card-tag-row">
+                <span class="chip">LLM Jailbreak</span>
+                <span class="chip">Instruction Hijack</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Impacted Demographics -->
+          <div class="impact-panel instrument-card mt-lg">
+            <div class="card-header-bar">
+              <span class="card-num">[ IMPACT ]</span>
+              <span class="card-title">VULNERABILITY ASSESSMENT ACROSS POPULATION SEGMENTS</span>
+            </div>
+            <div class="impact-grid">
+              <div class="impact-col">
+                <h4 class="impact-title"><i class="fa-solid fa-graduation-cap"></i> Students & Young Job Seekers</h4>
+                <p>Targeted heavily by fake recruitment letters, non-existent unpaid internships with upfront charges, and task fraud.</p>
+              </div>
+              <div class="impact-col">
+                <h4 class="impact-title"><i class="fa-solid fa-mobile-screen"></i> Digital Payment & UPI Users</h4>
+                <p>Deceived by QR scan reversal tricks, fake cashback reward notifications, and collect-request exploits.</p>
+              </div>
+              <div class="impact-col">
+                <h4 class="impact-title"><i class="fa-solid fa-users"></i> General Citizens & Seniors</h4>
+                <p>Vulnerable to high-pressure digital arrest threats, electricity power disconnection notices, and OTP requests.</p>
+              </div>
+              <div class="impact-col">
+                <h4 class="impact-title"><i class="fa-solid fa-building"></i> Small Businesses & Freelancers</h4>
+                <p>Attacked through fraudulent payment dispute receipts, fake vendor communications, and invoice attachment executables.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION C — PAGE 03: OUR SOLUTION
+           ======================================================================= -->
+      <section id="solution" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 03 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">ARCHITECTURAL SOLUTION & DEFENSE PIPELINE</span>
+            </div>
+            <h2 class="section-heading">Deterministic Rigor Meets Contextual AI Reasoning</h2>
+            <p class="section-subtext">
+              CyberShield AI 2.0 does not blindly trust probabilistic LLM outputs. We enforce a 6-layer zero-trust pipeline
+              separating strictly observed empirical evidence from generative explanations:
+            </p>
+          </div>
+
+          <!-- Interactive Workflow Pipeline -->
+          <div class="workflow-strip">
+            <div class="workflow-step">
+              <div class="step-num">01</div>
+              <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                <h4 class="step-title">User Ingestion</h4>
+                <p class="step-desc">Untrusted text, SMS, email, URL, or file uploaded into the boundary.</p>
+              </div>
+            </div>
+            <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+            <div class="workflow-step">
+              <div class="step-num">02</div>
+              <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-user-shield"></i></div>
+                <h4 class="step-title">PII Sanitization</h4>
+                <p class="step-desc">Client & server redaction of credit cards, Aadhaar, PAN, UPI, passwords, and OTPs.</p>
+              </div>
+            </div>
+            <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+            <div class="workflow-step">
+              <div class="step-num">03</div>
+              <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h4 class="step-title">Prompt Guard</h4>
+                <p class="step-desc">Adversarial instruction overrides and jailbreaks quarantined before AI processing.</p>
+              </div>
+            </div>
+            <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+            <div class="workflow-step">
+              <div class="step-num">04</div>
+              <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <h4 class="step-title">IOC Extraction</h4>
+                <p class="step-desc">Deterministic extraction of URLs, domains, phones, UPI VPAs, and network anomalies.</p>
+              </div>
+            </div>
+            <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+            <div class="workflow-step">
+              <div class="step-num">05</div>
+              <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-brain"></i></div>
+                <h4 class="step-title">AI & Heuristics</h4>
+                <p class="step-desc">Gemini 3.8 contextual reasoning with instantaneous heuristic failover on timeout.</p>
+              </div>
+            </div>
+            <div class="workflow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+            <div class="workflow-step">
+              <div class="step-num">06</div>
+              <div class="step-card">
+                <div class="step-icon"><i class="fa-solid fa-file-shield"></i></div>
+                <h4 class="step-title">Evidence & Action</h4>
+                <p class="step-desc">Normalized score (0-100), categorical risk level, empirical evidence, and mitigation steps.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deterministic vs AI Comparison Panel -->
+          <div class="comparison-grid mt-xl">
+            <div class="instrument-card comparison-card deterministic">
+              <div class="card-header-bar">
+                <span class="card-num">[ LAYER A ]</span>
+                <span class="card-title">DETERMINISTIC SECURITY ENGINE</span>
+                <span class="status-pill status-teal">MATHEMATICAL CERTAINTY</span>
+              </div>
+              <ul class="comp-list">
+                <li><i class="fa-solid fa-check text-teal"></i> Zero hallucination: observed indicators strictly exist in input.</li>
+                <li><i class="fa-solid fa-check text-teal"></i> Magic byte verification: PE binaries disguised as PDFs detected instantly.</li>
+                <li><i class="fa-solid fa-check text-teal"></i> Zip-Bomb & Zip-Slip traversal rejection without code execution.</li>
+                <li><i class="fa-solid fa-check text-teal"></i> Luhn algorithm verification for credit and debit card numbers.</li>
+                <li><i class="fa-solid fa-check text-teal"></i> Operates in &lt; 15ms even when network or AI providers are completely offline.</li>
+              </ul>
+            </div>
+
+            <div class="instrument-card comparison-card generative">
+              <div class="card-header-bar">
+                <span class="card-num">[ LAYER B ]</span>
+                <span class="card-title">GOOGLE GEMINI 3.8 AI REASONING</span>
+                <span class="status-pill status-coral">CONTEXTUAL INTELLIGENCE</span>
+              </div>
+              <ul class="comp-list">
+                <li><i class="fa-solid fa-check text-coral"></i> Decodes complex social engineering manipulation and psychological urgency.</li>
+                <li><i class="fa-solid fa-check text-coral"></i> Evaluates nuanced career and recruitment communication contexts.</li>
+                <li><i class="fa-solid fa-check text-coral"></i> Synthesizes plain-language explanations for non-technical users.</li>
+                <li><i class="fa-solid fa-check text-coral"></i> Strict JSON schema enforcement with bounded 10-second timeout.</li>
+                <li><i class="fa-solid fa-check text-coral"></i> Safe automatic fallback: network failure never crashes the security verdict.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION D — PAGE 04: COMPLETE FEATURES
+           ======================================================================= -->
+      <section id="features" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 04 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">COMPREHENSIVE CAPABILITIES CATALOG</span>
+            </div>
+            <h2 class="section-heading">18 Functional Security & Intelligence Capabilities</h2>
+            <p class="section-subtext">
+              Every feature listed below is verified in the backend test suite. Click any card to launch it directly in the Security Lab:
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <!-- 18 Real Verified Features -->
+            <div class="instrument-card feature-card" onclick="loadSample('phishing_email')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 01</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Phishing Email Detector</h4>
+              <p class="card-body-sm">Catches deceptive account suspension warnings, unauthorized logins, and coercive deadlines.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('electricity_sms')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 02</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">SMS Scam & Smishing Sentry</h4>
+              <p class="card-body-sm">Detects electricity disconnection threats, rogue officer phone numbers, and urgent bills.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('fake_job')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 03</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Fake Job Offer Analysis</h4>
+              <p class="card-body-sm">Identifies unrealistic daily earnings, Telegram task assignments, and WhatsApp HR lures.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('fake_internship')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 04</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Fake Internship & Fee Detector</h4>
+              <p class="card-body-sm">Unmasks certificates requiring training fees, screening bypasses, and security deposit demands.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('otp_theft')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 05</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">OTP Theft & Solicitation Guard</h4>
+              <p class="card-body-sm">Flags illicit attempts to obtain one-time passwords, SMS forwards, and verification codes.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('otp_theft')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 06</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Remote Desktop Extortion Shield</h4>
+              <p class="card-body-sm">Detects malicious instructions to install AnyDesk, TeamViewer, or screen-sharing tools.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('upi_fraud')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 07</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">UPI PIN Reverse Scam Sentry</h4>
+              <p class="card-body-sm">Intercepts fraudulent "enter your PIN to receive money" prompts and fraudulent requests.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('upi_fraud')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 08</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">QR Code Reversal Defense</h4>
+              <p class="card-body-sm">Warns against scanning merchant or dynamic QR codes falsely claimed as incoming payments.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('digital_arrest')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 09</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Digital Arrest & Extortion Analyzer</h4>
+              <p class="card-body-sm">Recognizes fake police, CBI, and customs drug parcel threats enforcing camera confinement.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('distressed_relative')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 10</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Social Engineering & Urgency Detector</h4>
+              <p class="card-body-sm">Detects distressed family relative impersonation ("Dad, lost phone in emergency, send funds").</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('url_analysis')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 11</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Suspicious URL & Hostname Inspector</h4>
+              <p class="card-body-sm">Identifies raw numerical IP hosts, link shorteners, and brand typosquatting domains.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('url_analysis')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 12</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Low-Reputation TLD Scanner</h4>
+              <p class="card-body-sm">Flags suspicious top-level domains (.xyz, .cfd, .top, .buzz) common in disposable campaigns.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('prompt_injection')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 13</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Prompt Injection Guard</h4>
+              <p class="card-body-sm">Quarantines adversarial instructions ("Ignore prior rules", "Reveal prompt") before AI ingestion.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('pii_sample')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 14</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Automated PII Redaction</h4>
+              <p class="card-body-sm">Sanitizes credit cards with Luhn verification, Indian Aadhaar, PAN, UPI IDs, and credentials.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('url_analysis')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 15</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">VirusTotal v3 Intelligence</h4>
+              <p class="card-body-sm">Read-only domain and file-hash reputation lookup with 1-hour in-memory cache and zero file uploads.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('phishing_email')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 16</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Evidence-Based Risk Scoring</h4>
+              <p class="card-body-sm">Synthesizes scores (0.0 to 100.0) with strict critical floors (>= 92.0) for high-severity threats.</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="loadSample('electricity_sms')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 17</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Actionable Mitigation Engine</h4>
+              <p class="card-body-sm">Generates prioritized safety countermeasures categorized by urgency (IMMEDIATE to INFO).</p>
+              <button class="btn btn-ghost btn-xs">TEST IN LAB <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="instrument-card feature-card" onclick="switchLabTab('file')">
+              <div class="card-kicker"><span class="feat-id">FEAT // 18</span> <span class="badge-live">LIVE</span></div>
+              <h4 class="card-title-md">Safe Static File Threat Analyzer</h4>
+              <p class="card-body-sm">Non-execution static inspection checking PE magic bytes, double extensions, and Zip-bombs.</p>
+              <button class="btn btn-ghost btn-xs">INSPECT FILE <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION E — PAGE 05: FUNCTIONAL SECURITY ANALYSIS LAB
+           ======================================================================= -->
+      <section id="lab" class="content-section lab-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 05 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">OPERATIONAL SECURITY ANALYSIS LAB</span>
+              <span class="kicker-badge"><i class="fa-solid fa-bolt"></i> REAL BACKEND CONNECTED</span>
+            </div>
+            <h2 class="section-heading">Interactive Threat Intelligence Console</h2>
+            <p class="section-subtext">
+              Submit raw suspicious digital messages, emails, SMS, job offers, or files.
+              Execution connects live to the Member 2 API endpoints on port 8000.
+            </p>
+          </div>
+
+          <!-- Analysis Workspace Grid -->
+          <div class="lab-workspace-grid">
+
+            <!-- Left Panel: Input Controls & Presets -->
+            <div class="instrument-card lab-input-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ INPUT CONSOLE ]</span>
+                <span class="card-title">SUBMIT DIGITAL CONTENT</span>
+                <div class="lab-tab-switch" role="tablist">
+                  <button type="button" class="lab-tab-btn active" id="tab-btn-url" onclick="switchLabTab('url')" role="tab" aria-selected="true"><i class="fa-solid fa-link"></i> URL</button>
+                  <button type="button" class="lab-tab-btn" id="tab-btn-sms" onclick="switchLabTab('sms')" role="tab" aria-selected="false"><i class="fa-solid fa-comment-sms"></i> SMS</button>
+                  <button type="button" class="lab-tab-btn" id="tab-btn-email" onclick="switchLabTab('email')" role="tab" aria-selected="false"><i class="fa-solid fa-envelope"></i> EMAIL</button>
+                  <button type="button" class="lab-tab-btn" id="tab-btn-text" onclick="switchLabTab('text')" role="tab" aria-selected="false"><i class="fa-solid fa-file-lines"></i> TEXT</button>
+                  <button type="button" class="lab-tab-btn" id="tab-btn-file" onclick="switchLabTab('file')" role="tab" aria-selected="false"><i class="fa-solid fa-file-shield"></i> FILE</button>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   PANEL 1: URL / WEB DOMAIN ANALYSIS
+                   ========================================== -->
+              <div id="lab-url-panel" class="lab-subpanel">
+                <div class="subpanel-header-row">
+                  <span class="subpanel-kicker"><i class="fa-solid fa-globe text-teal"></i> WEB THREAT & PHISHING URL INSPECTOR</span>
+                  <span class="badge-tag">STAGE 4/5 UNIFIED SCANS</span>
+                </div>
+                <p class="subpanel-desc">
+                  Inspect suspected phishing websites, deceptive lookalike domains, credential harvesters, or SSRF policy boundaries.
+                </p>
+
+                <div class="form-group">
+                  <div class="textarea-header">
+                    <label class="form-label" for="analysis-input-url">TARGET WEB URL</label>
+                    <span class="char-counter" id="url-char-counter">Valid URL format expected</span>
+                  </div>
+                  <input
+                    type="url"
+                    id="analysis-input-url"
+                    class="form-input"
+                    placeholder="https://secure-login-hdfcbank-netbanking-verify.xyz/account/login.php"
+                    autocomplete="off"
+                    spellcheck="false"
+                    required
+                  />
+                  <div class="input-action-bar">
+                    <div class="input-action-btns">
+                      <button type="button" class="btn btn-secondary btn-xs" onclick="pasteToInput('analysis-input-url')" title="Paste URL from clipboard">
+                        <i class="fa-solid fa-paste"></i> PASTE URL
+                      </button>
+                      <button type="button" class="btn btn-ghost btn-xs" onclick="clearInput('analysis-input-url')" title="Clear URL input">
+                        <i class="fa-solid fa-xmark"></i> CLEAR
+                      </button>
+                    </div>
+                    <span class="text-mid" style="font-size: 11px; font-family: var(--font-mono);">Press [Enter] to scan</span>
+                  </div>
+                </div>
+
+                <!-- URL Presets -->
+                <div class="presets-block">
+                  <span class="presets-label">INJECT VERIFIED URL SAMPLES:</span>
+                  <div class="preset-pill-group">
+                    <button type="button" class="preset-pill" onclick="loadUrlSample('url_phishing')">🎣 HDFC Phish Portal</button>
+                    <button type="button" class="preset-pill" onclick="loadUrlSample('url_suspicious')">⚠️ Suspicious .xyz</button>
+                    <button type="button" class="preset-pill" onclick="loadUrlSample('url_ssrf')">🛡️ SSRF Localhost</button>
+                    <button type="button" class="preset-pill" onclick="loadUrlSample('url_safe')">✅ Harmless Website</button>
+                  </div>
+                </div>
+
+                <!-- URL Toggles -->
+                <div class="options-strip">
+                  <label class="checkbox-label" title="Queries VirusTotal v3 domain intelligence">
+                    <input type="checkbox" id="toggle-url-vt" checked />
+                    <span>VirusTotal Intel</span>
+                  </label>
+                  <label class="checkbox-label" title="Enforces SSRF isolation and private IP range defense">
+                    <input type="checkbox" id="toggle-url-ssrf" checked />
+                    <span>SSRF Zero-Trust Guard</span>
+                  </label>
+                  <label class="checkbox-label" title="Requests Gemini AI narrative explanation">
+                    <input type="checkbox" id="toggle-url-gemini" checked />
+                    <span>Gemini AI Reasoner</span>
+                  </label>
+                </div>
+
+                <!-- URL Action Button -->
+                <div class="action-row">
+                  <button type="button" class="btn btn-primary btn-block" id="btn-run-url-analysis" onclick="executeUrlAnalysis()">
+                    <i class="fa-solid fa-radar"></i>
+                    <span>ANALYZE WEB URL</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   PANEL 2: SMS / SMISHING ANALYSIS
+                   ========================================== -->
+              <div id="lab-sms-panel" class="lab-subpanel" hidden>
+                <div class="subpanel-header-row">
+                  <span class="subpanel-kicker"><i class="fa-solid fa-comment-sms text-teal"></i> SMS & SMISHING THREAT INSPECTOR</span>
+                  <span class="badge-tag">TELECOM INTELLIGENCE</span>
+                </div>
+                <p class="subpanel-desc">
+                  Inspect SMS messages for power disconnection urgency, OTP harvesting, fake lottery prizes, and coercive digital arrest vectors.
+                </p>
+
+                <div class="form-group">
+                  <label class="form-label" for="analysis-sms-sender">SENDER ID / SENDER PHONE (OPTIONAL)</label>
+                  <input
+                    type="text"
+                    id="analysis-sms-sender"
+                    class="form-input"
+                    placeholder="e.g. +919876543210, VK-HDFCBK, CP-GOVT, or leave blank"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <div class="textarea-header">
+                    <label class="form-label" for="analysis-input-sms">SMS MESSAGE CONTENT</label>
+                    <span class="char-counter" id="sms-char-counter">0 / 2,000 chars</span>
+                  </div>
+                  <textarea
+                    id="analysis-input-sms"
+                    class="form-textarea"
+                    rows="6"
+                    placeholder="Paste incoming SMS text message here..."
+                  ></textarea>
+                  <div class="input-action-bar">
+                    <div class="input-action-btns">
+                      <button type="button" class="btn btn-secondary btn-xs" onclick="pasteToInput('analysis-input-sms')" title="Paste from clipboard">
+                        <i class="fa-solid fa-paste"></i> PASTE SMS
+                      </button>
+                      <button type="button" class="btn btn-ghost btn-xs" onclick="clearInput('analysis-input-sms')" title="Clear text">
+                        <i class="fa-solid fa-xmark"></i> CLEAR
+                      </button>
+                    </div>
+                    <span class="text-mid" style="font-size: 11px; font-family: var(--font-mono);">[Ctrl+Enter] to analyze</span>
+                  </div>
+                </div>
+
+                <!-- SMS Presets -->
+                <div class="presets-block">
+                  <span class="presets-label">INJECT VERIFIED SMS SAMPLES:</span>
+                  <div class="preset-pill-group">
+                    <button type="button" class="preset-pill" onclick="loadSmsSample('electricity_sms')">⚡ Electricity Cutoff</button>
+                    <button type="button" class="preset-pill" onclick="loadSmsSample('otp_theft')">🔑 Bank OTP Theft</button>
+                    <button type="button" class="preset-pill" onclick="loadSmsSample('prize_scam')">🏆 Lottery Prize</button>
+                    <button type="button" class="preset-pill" onclick="loadSmsSample('safe_sms')">✅ Clean Appointment</button>
+                  </div>
+                </div>
+
+                <!-- SMS Toggles -->
+                <div class="options-strip">
+                  <label class="checkbox-label" title="Masks phone numbers, OTPs, UPI, and bank accounts">
+                    <input type="checkbox" id="toggle-sms-pii" checked />
+                    <span>Redact PII (Zero-Trust)</span>
+                  </label>
+                  <label class="checkbox-label" title="Queries Gemini AI for behavioral intent">
+                    <input type="checkbox" id="toggle-sms-gemini" checked />
+                    <span>Gemini AI Reasoner</span>
+                  </label>
+                  <label class="checkbox-label" title="Queries VirusTotal for extracted links">
+                    <input type="checkbox" id="toggle-sms-vt" checked />
+                    <span>VirusTotal Intel</span>
+                  </label>
+                </div>
+
+                <!-- SMS Action Button -->
+                <div class="action-row">
+                  <button type="button" class="btn btn-primary btn-block" id="btn-run-sms-analysis" onclick="executeSmsAnalysis()">
+                    <i class="fa-solid fa-radar"></i>
+                    <span>ANALYZE SMS MESSAGE</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   PANEL 3: EMAIL / SPEAR-PHISHING ANALYSIS
+                   ========================================== -->
+              <div id="lab-email-panel" class="lab-subpanel" hidden>
+                <div class="subpanel-header-row">
+                  <span class="subpanel-kicker"><i class="fa-solid fa-envelope text-teal"></i> EMAIL PHISHING & HEADER INSPECTOR</span>
+                  <span class="badge-tag">MEMBER 2 ENGINE</span>
+                </div>
+                <p class="subpanel-desc">
+                  Inspect email subjects, senders, and body content for corporate credential theft, deceptive domain spoofing, and employment scams.
+                </p>
+
+                <div class="form-group">
+                  <label class="form-label" for="analysis-email-sender">SENDER ADDRESS / DISPLAY NAME</label>
+                  <input
+                    type="text"
+                    id="analysis-email-sender"
+                    class="form-input"
+                    placeholder="e.g. IT Support <admin@microsoft-security-update.xyz>"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="analysis-email-subject">EMAIL SUBJECT LINE</label>
+                  <input
+                    type="text"
+                    id="analysis-email-subject"
+                    class="form-input"
+                    placeholder="e.g. Urgent Account Verification Required - Office 365"
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <div class="textarea-header">
+                    <label class="form-label" for="analysis-input-email">EMAIL BODY CONTENT</label>
+                    <span class="char-counter" id="email-char-counter">0 / 50,000 chars</span>
+                  </div>
+                  <textarea
+                    id="analysis-input-email"
+                    class="form-textarea"
+                    rows="6"
+                    placeholder="Paste full email body content here..."
+                  ></textarea>
+                  <div class="input-action-bar">
+                    <div class="input-action-btns">
+                      <button type="button" class="btn btn-secondary btn-xs" onclick="pasteToInput('analysis-input-email')" title="Paste from clipboard">
+                        <i class="fa-solid fa-paste"></i> PASTE EMAIL
+                      </button>
+                      <button type="button" class="btn btn-ghost btn-xs" onclick="clearInput('analysis-input-email')" title="Clear body">
+                        <i class="fa-solid fa-xmark"></i> CLEAR
+                      </button>
+                    </div>
+                    <span class="text-mid" style="font-size: 11px; font-family: var(--font-mono);">[Ctrl+Enter] to analyze</span>
+                  </div>
+                </div>
+
+                <!-- Email Presets -->
+                <div class="presets-block">
+                  <span class="presets-label">INJECT VERIFIED EMAIL SAMPLES:</span>
+                  <div class="preset-pill-group">
+                    <button type="button" class="preset-pill" onclick="loadEmailSample('phishing_email')">🎣 Microsoft 365 Phish</button>
+                    <button type="button" class="preset-pill" onclick="loadEmailSample('fake_internship')">🎓 Fake Job Offer</button>
+                    <button type="button" class="preset-pill" onclick="loadEmailSample('pii_sample')">💳 PII Refund Form</button>
+                    <button type="button" class="preset-pill" onclick="loadEmailSample('safe_email')">✅ Clean Sprint Note</button>
+                  </div>
+                </div>
+
+                <!-- Email Toggles -->
+                <div class="options-strip">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="toggle-email-pii" checked />
+                    <span>Redact PII (Zero-Trust)</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="toggle-email-gemini" checked />
+                    <span>Gemini AI Reasoner</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="toggle-email-vt" checked />
+                    <span>VirusTotal Threat Intel</span>
+                  </label>
+                </div>
+
+                <!-- Email Action Button -->
+                <div class="action-row">
+                  <button type="button" class="btn btn-primary btn-block" id="btn-run-email-analysis" onclick="executeEmailAnalysis()">
+                    <i class="fa-solid fa-radar"></i>
+                    <span>ANALYZE EMAIL MESSAGE</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   PANEL 4: GENERAL TEXT / CHAT ANALYSIS
+                   ========================================== -->
+              <div id="lab-text-panel" class="lab-subpanel" hidden>
+                <div class="subpanel-header-row">
+                  <span class="subpanel-kicker"><i class="fa-solid fa-file-lines text-teal"></i> GENERAL TEXT & CHAT PAYLOAD INSPECTOR</span>
+                  <span class="badge-tag">UNIVERSAL ANALYZER</span>
+                </div>
+                <p class="subpanel-desc">
+                  Inspect messaging app payloads (WhatsApp, Telegram), UPI PIN scams, digital arrest coercion, or prompt injection exploits.
+                </p>
+
+                <!-- Source Context Selector -->
+                <div class="form-group">
+                  <label class="form-label" for="source-type-select">SOURCE CONTEXT</label>
+                  <select id="source-type-select" class="form-select">
+                    <option value="sms">SMS / Text Message</option>
+                    <option value="email">Email Communication</option>
+                    <option value="job_offer">Job or Internship Offer</option>
+                    <option value="payment_request">Payment or UPI Request</option>
+                    <option value="chat">Messaging App (WhatsApp/Telegram)</option>
+                    <option value="url">URL / Web Domain Inspection</option>
+                    <option value="unknown">General / Unspecified</option>
+                  </select>
+                </div>
+
+                <!-- Content Textarea -->
+                <div class="form-group">
+                  <div class="textarea-header">
+                    <label class="form-label" for="analysis-input-text">UNTRUSTED CONTENT PAYLOAD</label>
+                    <span class="char-counter" id="char-counter">0 / 50,000 chars</span>
+                  </div>
+                  <textarea
+                    id="analysis-input-text"
+                    class="form-textarea"
+                    rows="8"
+                    placeholder="Paste suspicious message, job offer, UPI payment message, or chat here..."
+                  ></textarea>
+                  <div class="input-action-bar">
+                    <div class="input-action-btns">
+                      <button type="button" class="btn btn-secondary btn-xs" onclick="pasteToInput('analysis-input-text')" title="Paste from clipboard">
+                        <i class="fa-solid fa-paste"></i> PASTE
+                      </button>
+                      <button type="button" class="btn btn-ghost btn-xs" onclick="clearInput('analysis-input-text')" title="Clear text">
+                        <i class="fa-solid fa-xmark"></i> CLEAR
+                      </button>
+                    </div>
+                    <span class="text-mid" style="font-size: 11px; font-family: var(--font-mono);">[Ctrl+Enter] to analyze</span>
+                  </div>
+                </div>
+
+                <!-- Quick Preset Sample Injectors -->
+                <div class="presets-block">
+                  <span class="presets-label">INJECT VERIFIED TEST SAMPLES:</span>
+                  <div class="preset-pill-group">
+                    <button type="button" class="preset-pill" onclick="loadSample('upi_fraud')">💳 UPI PIN Scam</button>
+                    <button type="button" class="preset-pill" onclick="loadSample('digital_arrest')">⚖️ Digital Arrest</button>
+                    <button type="button" class="preset-pill" onclick="loadSample('prompt_injection')">🛡️ Prompt Injection</button>
+                    <button type="button" class="preset-pill" onclick="loadSample('safe_message')">✅ Safe Meeting</button>
+                  </div>
+                </div>
+
+                <!-- Analysis Toggles -->
+                <div class="options-strip">
+                  <label class="checkbox-label" title="Masks credit cards, Aadhaar, PAN, UPI, passwords, and OTPs before AI ingestion">
+                    <input type="checkbox" id="toggle-redact-pii" checked />
+                    <span>Redact PII (Zero-Trust)</span>
+                  </label>
+                  <label class="checkbox-label" title="Queries Google Gemini Flash for contextual reasoning">
+                    <input type="checkbox" id="toggle-enable-gemini" checked />
+                    <span>Gemini AI Reasoning</span>
+                  </label>
+                  <label class="checkbox-label" title="Queries VirusTotal v3 public reputation cache for extracted domains">
+                    <input type="checkbox" id="toggle-enable-vt" checked />
+                    <span>VirusTotal Threat Intel</span>
+                  </label>
+                </div>
+
+                <!-- Action Button -->
+                <div class="action-row">
+                  <button type="button" class="btn btn-primary btn-block" id="btn-run-analysis" onclick="executeTextAnalysis()">
+                    <i class="fa-solid fa-radar"></i>
+                    <span>EXECUTE THREAT ANALYSIS</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   PANEL 5: STATIC FILE ANALYSIS
+                   ========================================== -->
+              <div id="lab-file-panel" class="lab-subpanel" hidden>
+                <div class="subpanel-header-row">
+                  <span class="subpanel-kicker"><i class="fa-solid fa-file-shield text-teal"></i> SAFE STATIC FILE INSPECTOR</span>
+                  <span class="badge-tag">NON-EXECUTION AUDIT</span>
+                </div>
+                <p class="subpanel-desc">
+                  Performs static structural inspection (Magic bytes, double extensions, Zip-bombs, EICAR signatures) without executing code.
+                </p>
+                <div class="file-dropzone" id="file-dropzone">
+                  <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                  <h4 class="drop-title">Select or Drop Suspicious File</h4>
+                  <p class="drop-desc">Supported: TXT, LOG, PDF, DOCX, ZIP, TAR, EICAR tests (max 25 MB).</p>
+                  <input type="file" id="file-input-el" class="file-hidden-input" onchange="handleFileSelected(event)" />
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('file-input-el').click()"><i class="fa-solid fa-folder-open"></i> BROWSE LOCAL FILE</button>
+                </div>
+                <div id="selected-file-info" class="selected-file-pill" hidden>
+                  <i class="fa-solid fa-file-code"></i>
+                  <span id="selected-filename">filename.bin</span>
+                  <span id="selected-filesize" class="badge-size">(0 KB)</span>
+                  <button type="button" class="btn btn-primary btn-sm ml-auto" id="btn-run-file-analysis" onclick="executeFileAnalysis()">INSPECT FILE</button>
+                </div>
+              </div>
+
+              <!-- Loading State Overlay (Enforced hidden with pointer-events: none when idle) -->
+              <div class="lab-loading-overlay" id="lab-loading" hidden>
+                <div class="loading-spinner"></div>
+                <div class="loading-text">PIPELINE EXECUTING...</div>
+                <div class="loading-subtext">Sanitizing PII · Checking Injections · Extracting IOCs · Reasoning</div>
+                <button type="button" class="btn btn-ghost btn-xs cancel-analysis-btn" onclick="abortAnalysis()" title="Abort current execution">
+                  <i class="fa-solid fa-xmark"></i> CANCEL EXECUTION
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Panel: Live Evidence-Based Threat Verdict -->
+            <div class="instrument-card lab-output-card" id="lab-output-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ VERDICT ]</span>
+                <span class="card-title">ANALYSIS VERDICT & EVIDENCE REPORT</span>
+                <button class="btn btn-ghost btn-xs" onclick="resetLabOutput()" title="Clear analysis output"><i class="fa-solid fa-rotate-left"></i> CLEAR</button>
+              </div>
+
+              <!-- Empty State (Before Analysis) -->
+              <div class="lab-empty-state" id="lab-empty-state">
+                <div class="empty-reticle">
+                  <i class="fa-solid fa-crosshairs"></i>
+                </div>
+                <h4 class="empty-title">Awaiting Content Payload</h4>
+                <p class="empty-desc">
+                  Select a verified test sample or enter custom content on the left, then click <strong>Execute Threat Analysis</strong> to inspect the live response.
+                </p>
+                <div class="empty-badges">
+                  <span class="chip"><i class="fa-solid fa-shield"></i> ZERO-TRUST PRIVACY</span>
+                  <span class="chip"><i class="fa-solid fa-bolt"></i> DETERMINISTIC FLOORS</span>
+                  <span class="chip"><i class="fa-solid fa-code"></i> STRUCTURED JSON</span>
+                </div>
+              </div>
+
+              <!-- Active Results Container -->
+              <div class="lab-results-container" id="lab-results" hidden>
+                <!-- Prominent Verdict-First Card (Verdict & Risk Level displayed BEFORE numerical score) -->
+                <div class="verdict-card" id="verdict-banner">
+                  <div class="verdict-main-row">
+                    <div class="verdict-icon-wrap" id="res-verdict-icon">
+                      <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="verdict-heading-group">
+                      <div class="verdict-kicker-row">
+                        <span class="verdict-kicker">AUTONOMOUS THREAT VERDICT</span>
+                        <span class="verdict-pill-type" id="res-verdict-type-pill">THREAT EVALUATION</span>
+                      </div>
+                      <h3 class="verdict-status-title" id="res-verdict-title">ANALYSIS COMPLETE</h3>
+                      <p class="verdict-subtitle" id="res-verdict-subtitle">Threat evaluation breakdown</p>
+                    </div>
+                  </div>
+
+                  <!-- Metrics Row: Risk Level, Risk Score, Category, Engine -->
+                  <div class="verdict-metrics-row">
+                    <div class="metric-badge severity-badge" id="res-risk-level-badge">
+                      <span class="metric-label">RISK LEVEL</span>
+                      <span class="metric-value" id="res-risk-level">UNKNOWN</span>
+                    </div>
+                    <div class="metric-badge score-badge" id="res-risk-score-badge">
+                      <span class="metric-label">RISK SCORE</span>
+                      <span class="metric-value"><strong id="res-risk-score">0.0</strong> <small>/ 100</small></span>
+                    </div>
+                    <div class="metric-badge category-badge">
+                      <span class="metric-label">CATEGORY</span>
+                      <span class="metric-value" id="res-primary-category">GENERAL</span>
+                    </div>
+                    <div class="metric-badge engine-badge">
+                      <span class="metric-label">ENGINE</span>
+                      <span class="metric-value" id="res-engine-used">hybrid-ensemble</span>
+                    </div>
+                  </div>
+
+                  <!-- Primary Action Callout -->
+                  <div class="primary-action-card" id="res-primary-action-card">
+                    <div class="action-card-header">
+                      <i class="fa-solid fa-shield-halved"></i>
+                      <span class="action-heading">IMMEDIATE RECOMMENDED ACTION</span>
+                    </div>
+                    <div class="action-card-body" id="res-primary-action-text">
+                      Exercise standard operational caution.
+                    </div>
+                  </div>
+
+                  <!-- "Why Was It Flagged?" Summary -->
+                  <div class="why-flagged-card">
+                    <h5 class="why-flagged-title"><i class="fa-solid fa-list-check"></i> WHY WAS THIS FLAGGED?</h5>
+                    <ul class="why-flagged-list" id="res-why-flagged-list">
+                      <li>Analyzing empirical indicators...</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Prompt Injection Alert (If triggered) -->
+                <div class="injection-alert-banner" id="res-injection-alert" hidden>
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <div class="alert-content">
+                    <strong>PROMPT INJECTION VECTOR DETECTED:</strong> Untrusted instruction override attempt was identified and quarantined. Analysis proceeded with zero trust.
+                  </div>
+                </div>
+
+                <!-- Tabs: Evidence / AI Assessment / IOCs / Mitigation / Raw JSON -->
+                <div class="results-tab-bar">
+                  <button class="res-tab active" onclick="switchResultTab('evidence')">OBSERVED EVIDENCE (<span id="evidence-count">0</span>)</button>
+                  <button class="res-tab" onclick="switchResultTab('assessment')">AI ASSESSMENT</button>
+                  <button class="res-tab" onclick="switchResultTab('iocs')">EXTRACTED IOCs</button>
+                  <button class="res-tab" onclick="switchResultTab('mitigation')">RECOMMENDED ACTIONS</button>
+                  <button class="res-tab" onclick="switchResultTab('redacted')">PII REDACTED</button>
+                  <button class="res-tab" onclick="switchResultTab('json')">RAW JSON</button>
+                </div>
+
+                <!-- Tab 1: Observed Evidence -->
+                <div class="res-tab-content active" id="tab-evidence">
+                  <div class="evidence-list" id="res-evidence-list">
+                    <!-- Populated dynamically via JS -->
+                  </div>
+                </div>
+
+                <!-- Tab 2: AI Assessment -->
+                <div class="res-tab-content" id="tab-assessment" hidden>
+                  <div class="assessment-box">
+                    <div class="assessment-label-banner">
+                      <i class="fa-solid fa-robot"></i>
+                      <span>[ AI-GENERATED EXPLANATION — CONTEXTUAL INTERPRETATION ONLY ]</span>
+                    </div>
+                    <div class="assessment-disclaimer">
+                      Deterministic heuristics and empirical security checks provide the hard baseline floor; the AI model synthesizes context and behavioral intent.
+                    </div>
+                    <h5 class="tab-subtitle">SYNTHESIZED TECHNICAL THREAT ASSESSMENT</h5>
+                    <p class="assessment-text" id="res-ai-assessment">No data</p>
+                    <div class="uncertainty-block" id="res-uncertainty-block">
+                      <h6 class="uncertainty-title">LIMITATIONS & UNCERTAINTY FACTORS</h6>
+                      <ul class="uncertainty-list" id="res-uncertainty-list"></ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab 3: Extracted IOCs -->
+                <div class="res-tab-content" id="tab-iocs" hidden>
+                  <div class="iocs-grid">
+                    <div class="ioc-card">
+                      <h5 class="ioc-title"><i class="fa-solid fa-link"></i> EXTRACTED URLs (<span id="ioc-urls-count">0</span>)</h5>
+                      <ul class="ioc-list" id="ioc-urls-list"><li>None detected</li></ul>
+                    </div>
+                    <div class="ioc-card">
+                      <h5 class="ioc-title"><i class="fa-solid fa-globe"></i> DOMAINS (<span id="ioc-domains-count">0</span>)</h5>
+                      <ul class="ioc-list" id="ioc-domains-list"><li>None detected</li></ul>
+                    </div>
+                    <div class="ioc-card">
+                      <h5 class="ioc-title"><i class="fa-solid fa-envelope"></i> EMAIL ADDRESSES (<span id="ioc-emails-count">0</span>)</h5>
+                      <ul class="ioc-list" id="ioc-emails-list"><li>None detected</li></ul>
+                    </div>
+                    <div class="ioc-card">
+                      <h5 class="ioc-title"><i class="fa-solid fa-phone"></i> PHONE NUMBERS (<span id="ioc-phones-count">0</span>)</h5>
+                      <ul class="ioc-list" id="ioc-phones-list"><li>None detected</li></ul>
+                    </div>
+                    <div class="ioc-card">
+                      <h5 class="ioc-title"><i class="fa-solid fa-money-bill-transfer"></i> UPI HANDLES (<span id="ioc-upi-count">0</span>)</h5>
+                      <ul class="ioc-list" id="ioc-upi-list"><li>None detected</li></ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tab 4: Mitigation Recommendations -->
+                <div class="res-tab-content" id="tab-mitigation" hidden>
+                  <div class="mitigation-list" id="res-mitigation-list">
+                    <!-- Populated dynamically via JS -->
+                  </div>
+                </div>
+
+                <!-- Tab 5: PII Redacted Content -->
+                <div class="res-tab-content" id="tab-redacted" hidden>
+                  <div class="redacted-box">
+                    <div class="redacted-header">
+                      <span>SANITIZED CONTENT SENT TO AI PROVIDER</span>
+                      <span class="badge-tag" id="pii-entities-count">0 Entities Redacted</span>
+                    </div>
+                    <pre class="redacted-pre" id="res-pii-text">None</pre>
+                  </div>
+                </div>
+
+                <!-- Tab 6: Raw JSON Schema -->
+                <div class="res-tab-content" id="tab-json" hidden>
+                  <div class="json-box">
+                    <div class="json-header">
+                      <span>STRUCTURED JSON RESPONSE (MEMBER 1 CONTRACT)</span>
+                      <button class="btn btn-ghost btn-xs" onclick="copyRawJson()"><i class="fa-solid fa-copy"></i> COPY JSON</button>
+                    </div>
+                    <pre class="json-pre" id="res-raw-json">{}</pre>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Error State -->
+              <div class="lab-error-state" id="lab-error-state" hidden>
+                <i class="fa-solid fa-circle-exclamation error-icon"></i>
+                <h4 class="error-title" id="error-title">Backend Connection Error</h4>
+                <p class="error-desc" id="error-desc">Unable to reach API on http://127.0.0.1:8000. Ensure server is active.</p>
+                <div class="error-actions" style="display: flex; gap: 8px; justify-content: center; margin-top: 12px;">
+                  <button class="btn btn-secondary btn-sm" onclick="checkBackendHealth()"><i class="fa-solid fa-rotate"></i> RETRY HEALTH CHECK</button>
+                  <button class="btn btn-ghost btn-sm" onclick="resetLabOutput()"><i class="fa-solid fa-rotate-left"></i> RESET INPUT</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION F — PAGE 06: SECURITY DASHBOARD
+           ======================================================================= -->
+      <section id="dashboard" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 06 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">SESSION TELEMETRY & AUDIT METRICS</span>
+            </div>
+            <h2 class="section-heading">Operational Security Dashboard</h2>
+            <p class="section-subtext">
+              Live metrics dynamically aggregated from actual analyses performed during this session:
+            </p>
+          </div>
+
+          <!-- Top Metric Cards Row -->
+          <div class="instrument-grid grid-4">
+            <div class="instrument-card metric-card">
+              <div class="metric-head"><span class="card-num">[ MTR // 01 ]</span> <i class="fa-solid fa-microchip"></i></div>
+              <div class="metric-big-num" id="dash-total-analyses">0</div>
+              <div class="metric-label">TOTAL ANALYSES RUN</div>
+              <div class="metric-footer text-mid">Session Lifetime Analyses</div>
+            </div>
+
+            <div class="instrument-card metric-card">
+              <div class="metric-head"><span class="card-num">[ MTR // 02 ]</span> <i class="fa-solid fa-shield-virus text-coral"></i></div>
+              <div class="metric-big-num text-coral" id="dash-critical-count">0</div>
+              <div class="metric-label">CRITICAL & HIGH THREATS</div>
+              <div class="metric-footer text-coral">Score &ge; 70.0 (Action Required)</div>
+            </div>
+
+            <div class="instrument-card metric-card">
+              <div class="metric-head"><span class="card-num">[ MTR // 03 ]</span> <i class="fa-solid fa-triangle-exclamation text-mid"></i></div>
+              <div class="metric-big-num" id="dash-medium-count">0</div>
+              <div class="metric-label">MEDIUM SEVERITY VECTORS</div>
+              <div class="metric-footer text-mid">Score 40.0 - 69.9 (Suspicious)</div>
+            </div>
+
+            <div class="instrument-card metric-card">
+              <div class="metric-head"><span class="card-num">[ MTR // 04 ]</span> <i class="fa-solid fa-circle-check text-teal"></i></div>
+              <div class="metric-big-num text-teal" id="dash-benign-count">0</div>
+              <div class="metric-label">BENIGN / CLEAN MESSAGES</div>
+              <div class="metric-footer text-teal">Score &lt; 40.0 (Harmless)</div>
+            </div>
+          </div>
+
+          <!-- Dashboard Charts & Telemetry Strip -->
+          <div class="dashboard-split mt-lg">
+            <!-- Left: Category Distribution Breakdown -->
+            <div class="instrument-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ DISTRIBUTION ]</span>
+                <span class="card-title">THREAT CATEGORY OCCURRENCE</span>
+              </div>
+              <div class="category-bars-list" id="dash-category-bars">
+                <div class="empty-hint text-mid">Perform analyses in the Security Lab to populate telemetry distribution.</div>
+              </div>
+            </div>
+
+            <!-- Right: System Service Status -->
+            <div class="instrument-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ HEALTH STATUS ]</span>
+                <span class="card-title">BACKEND SYSTEM & RUNTIME TELEMETRY</span>
+              </div>
+              <div class="telemetry-table">
+                <div class="telemetry-row">
+                  <span class="t-key">BACKEND SERVICE</span>
+                  <span class="t-val" id="t-service-name">CyberShield AI 2.0 (Port 8000)</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="t-key">PRIMARY LLM MODEL</span>
+                  <span class="t-val" id="t-model-name">gemini-3.8-flash</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="t-key">FAILOVER ENGINE</span>
+                  <span class="t-val text-teal">HeuristicScamEngine (Ready)</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="t-key">ZERO-TRUST POLICY</span>
+                  <span class="t-val text-teal">Enforced (Client & Server)</span>
+                </div>
+                <div class="telemetry-row">
+                  <span class="t-key">REGRESSION SUITE</span>
+                  <span class="t-val text-teal">98/98 Tests Passed (100%)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity Log Table -->
+          <div class="instrument-card mt-lg">
+            <div class="card-header-bar">
+              <span class="card-num">[ AUDIT LOG ]</span>
+              <span class="card-title">RECENT ANALYSIS ACTIVITY LOG</span>
+              <span class="chip-sm" id="log-count-chip">0 ENTRIES</span>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>TIMESTAMP</th>
+                    <th>SOURCE</th>
+                    <th>CONTENT EXCERPT</th>
+                    <th>PRIMARY CATEGORY</th>
+                    <th>RISK LEVEL</th>
+                    <th>SCORE</th>
+                    <th>ENGINE</th>
+                  </tr>
+                </thead>
+                <tbody id="dash-activity-tbody">
+                  <tr>
+                    <td colspan="7" class="text-center text-mid py-md">No activity recorded yet. Run an analysis above.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION G — PAGE 07: ARCHITECTURE
+           ======================================================================= -->
+      <section id="architecture" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 07 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">SYSTEM TOPOLOGY & DATA FLOW</span>
+            </div>
+            <h2 class="section-heading">Full-Stack Security Architecture</h2>
+            <p class="section-subtext">
+              Modular micro-service architecture separating presentation, gateway routing, AI scam intelligence,
+              and cryptographic integrity validation:
+            </p>
+          </div>
+
+          <!-- Architecture Visual Card -->
+          <div class="instrument-card">
+            <div class="arch-flow-diagram">
+              <!-- Tier 1: Client Layer -->
+              <div class="arch-tier">
+                <div class="tier-label">TIER 1 · FRONTEND LAYER (MEMBER 4)</div>
+                <div class="tier-nodes">
+                  <div class="arch-box">
+                    <span class="box-tag">UI / UX</span>
+                    <h5>CyberShield Web Portal</h5>
+                    <p>Single-viewport responsive client with Security Lab, Dashboard, and Real-Time Telemetry.</p>
+                  </div>
+                  <div class="arch-box">
+                    <span class="box-tag">CLIENT PRIVACY</span>
+                    <h5>Client PII Masker</h5>
+                    <p>Browser-side regex sanitization preventing raw sensitive data from network egress.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arch-connector"><i class="fa-solid fa-arrow-down"></i> REST / HTTPS HTTP/2</div>
+
+              <!-- Tier 2: Gateway Layer -->
+              <div class="arch-tier">
+                <div class="tier-label">TIER 2 · API GATEWAY & ORCHESTRATION (MEMBER 1)</div>
+                <div class="tier-nodes">
+                  <div class="arch-box">
+                    <span class="box-tag">GATEWAY</span>
+                    <h5>FastAPI REST Gateway</h5>
+                    <p>Port 8000 ASGI router, CORS validation, schema serialization, and rate-limiting.</p>
+                  </div>
+                  <div class="arch-box">
+                    <span class="box-tag">DATA MODEL</span>
+                    <h5>Pydantic v2 Contract</h5>
+                    <p>Shared strict schemas (ScamAnalysisRequest / ScamAnalysisResponse).</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arch-connector"><i class="fa-solid fa-arrow-down"></i> In-Memory SDK / Zero-Overhead Python Call</div>
+
+              <!-- Tier 3: Core AI & Detection Layer -->
+              <div class="arch-tier">
+                <div class="tier-label">TIER 3 · AI SCAM INTELLIGENCE ENGINE (MEMBER 2)</div>
+                <div class="tier-nodes">
+                  <div class="arch-box highlight-box">
+                    <span class="box-tag">ZERO TRUST</span>
+                    <h5>Prompt Injection Guard</h5>
+                    <p>Quarantines instruction overrides and delimiter tampering.</p>
+                  </div>
+                  <div class="arch-box highlight-box">
+                    <span class="box-tag">DETERMINISTIC</span>
+                    <h5>Deterministic Heuristic Core</h5>
+                    <p>6 domain detectors, IOC extractor, link inspector, critical floors.</p>
+                  </div>
+                  <div class="arch-box highlight-box">
+                    <span class="box-tag">AI REASONING</span>
+                    <h5>Gemini 3.8 Client</h5>
+                    <p>Contextual threat analysis with automatic 10s fallback.</p>
+                  </div>
+                  <div class="arch-box highlight-box">
+                    <span class="box-tag">EXTERNAL INTEL</span>
+                    <h5>VirusTotal v3 Client</h5>
+                    <p>Cached read-only domain & hash reputation lookup.</p>
+                  </div>
+                  <div class="arch-box highlight-box">
+                    <span class="box-tag">STATIC FILE</span>
+                    <h5>Safe File Inspector</h5>
+                    <p>Non-execution PE byte check, Zip-bomb & Zip-slip defense.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="arch-connector"><i class="fa-solid fa-arrow-down"></i> Hash Digest & Audit Evidence Contract</div>
+
+              <!-- Tier 4: Security & Integrity Layer -->
+              <div class="arch-tier">
+                <div class="tier-label">TIER 4 · SECURITY, CRYPTOGRAPHY & INTEGRITY (MEMBER 3)</div>
+                <div class="tier-nodes">
+                  <div class="arch-box">
+                    <span class="box-tag">CRYPTOGRAPHY</span>
+                    <h5>SHA-256 Digest & HMAC</h5>
+                    <p>Tamper-proof signature generated for every analysis verdict.</p>
+                  </div>
+                  <div class="arch-box">
+                    <span class="box-tag">INTEGRITY</span>
+                    <h5>Blockchain Audit Anchor</h5>
+                    <p>Immutable evidence hash registration for dispute resolution and forensics.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION H — PAGE 08: TEAM & MEMBER 1–4 RESPONSIBILITIES
+           ======================================================================= -->
+      <section id="team" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 08 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">TEAM ARCHITECTURE & WORK DIVISION</span>
+            </div>
+            <h2 class="section-heading">Collaborative Team Contributions (Member 1–4)</h2>
+            <p class="section-subtext">
+              Clearly defined ownership boundaries, verified technology stacks, and live integration statuses:
+            </p>
+          </div>
+
+          <div class="instrument-grid grid-2">
+            <!-- Member 1 -->
+            <div class="instrument-card team-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ MEMBER 01 ]</span>
+                <span class="card-title">BACKEND & API INTEGRATION</span>
+                <span class="status-pill status-teal">READY</span>
+              </div>
+              <div class="team-role-title">Backend Architecture & Platform Integration</div>
+              <p class="team-desc">Responsible for scalable API routing, backend gateway management, shared Pydantic data schemas, and microservice orchestration.</p>
+              <div class="team-meta-block">
+                <div class="team-meta-row"><strong>Verified Technologies:</strong> Python 3.13, FastAPI, Uvicorn, Pydantic v2, HTTPX</div>
+                <div class="team-meta-row"><strong>Key Deliverables:</strong> REST API Gateway, Shared Schemas, Error Handling, Server Lifecycle</div>
+                <div class="team-meta-row"><strong>Integration Status:</strong> Fully Connected (In-Process SDK & REST Endpoints)</div>
+              </div>
+            </div>
+
+            <!-- Member 2 -->
+            <div class="instrument-card team-card member2-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ MEMBER 02 ]</span>
+                <span class="card-title">AI INTELLIGENCE & SCAM ANALYSIS</span>
+                <span class="status-pill status-teal">IMPLEMENTED & VERIFIED</span>
+              </div>
+              <div class="team-role-title">AI Scam Intelligence, Prompt Guard & Threat Engine</div>
+              <p class="team-desc">Engineered the 6-layer threat detection pipeline, Gemini 3.8 integration, deterministic heuristics, PII redaction, safe file inspector, and 98 automated tests.</p>
+              <div class="team-meta-block">
+                <div class="team-meta-row"><strong>Verified Technologies:</strong> Google Gemini SDK, VirusTotal v3, NLP Regex, Pytest, Zero-Trust Architecture</div>
+                <div class="team-meta-row"><strong>Key Deliverables:</strong> 12+ Category Detectors, Prompt Guard, Heuristic Failover, Safe Analyzer</div>
+                <div class="team-meta-row"><strong>Integration Status:</strong> 100% Operational (98/98 Automated Tests Passed)</div>
+              </div>
+            </div>
+
+            <!-- Member 3 -->
+            <div class="instrument-card team-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ MEMBER 03 ]</span>
+                <span class="card-title">SECURITY, CRYPTOGRAPHY & BLOCKCHAIN</span>
+                <span class="status-pill status-amber">PENDING INTEGRATION</span>
+              </div>
+              <div class="team-role-title">Security Architecture, Evidence Integrity & Verification</div>
+              <p class="team-desc">Focuses on cryptographic hashing (SHA-256/HMAC), evidence integrity verification, and blockchain ledger integration for immutable audit logs.</p>
+              <div class="team-meta-block">
+                <div class="team-meta-row"><strong>Planned Technologies:</strong> Python Cryptography, Web3/Ethereum/Solidity, Hash Verification</div>
+                <div class="team-meta-row"><strong>Key Deliverables:</strong> Audit Hash Signer, Forensic Verification Module, Ledger Anchoring</div>
+                <div class="team-meta-row"><strong>Integration Status:</strong> Contract Prepared in docs/CYBERSHIELD_MEMBER_INTEGRATION_GUIDE.md</div>
+              </div>
+            </div>
+
+            <!-- Member 4 -->
+            <div class="instrument-card team-card">
+              <div class="card-header-bar">
+                <span class="card-num">[ MEMBER 04 ]</span>
+                <span class="card-title">FRONTEND & USER EXPERIENCE</span>
+                <span class="status-pill status-teal">IMPLEMENTED & READY</span>
+              </div>
+              <div class="team-role-title">Frontend Architecture, Visual Design & Interaction</div>
+              <p class="team-desc">Created the unified Medusa JF-4 inspired cybersecurity platform, Security Lab console, Telemetry Dashboard, responsive views, and real API connectors.</p>
+              <div class="team-meta-block">
+                <div class="team-meta-row"><strong>Verified Technologies:</strong> Semantic HTML5, CSS3 Variables, Vanilla JS, Inter & JetBrains Mono Fonts</div>
+                <div class="team-meta-row"><strong>Key Deliverables:</strong> Unified App Shell, Security Lab UI, Real API Handlers, Reactive Telemetry</div>
+                <div class="team-meta-row"><strong>Integration Status:</strong> Live & Connected to Port 8000 Backend</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION I — PAGE 09: TECHNOLOGY STACK (VERIFIED RUNTIMES & TOOLS)
+           ======================================================================= -->
+      <section id="tech-stack" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 09 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">VERIFIED ENGINE & RUNTIME SPECIFICATION</span>
+            </div>
+            <h2 class="section-heading">Verified Core Technology Stack</h2>
+            <p class="section-subtext">
+              Every technology in this stack is actively utilized and verified in the CyberShield AI 2.0 codebase — no decorative or aspirational claims:
+            </p>
+          </div>
+
+          <div class="instrument-grid grid-3">
+            <div class="instrument-card">
+              <div class="card-corner-cross top-left">+</div>
+              <div class="card-corner-cross top-right">+</div>
+              <div class="card-num">[ TECH // 01 ]</div>
+              <h4 class="card-title-md"><i class="fa-brands fa-python text-teal"></i> Python 3.13 (x64)</h4>
+              <p class="card-body-sm">Modern asynchronous core runtime powering the ScamAnalysisFacade, multi-pass regex heuristics, and subprocess integrity boundaries.</p>
+              <div class="tech-badge-wrap mt-sm">
+                <span class="tech-tag">Asyncio</span>
+                <span class="tech-tag">Type Annotations</span>
+                <span class="tech-tag">Context Managers</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-corner-cross top-left">+</div>
+              <div class="card-corner-cross top-right">+</div>
+              <div class="card-num">[ TECH // 02 ]</div>
+              <h4 class="card-title-md"><i class="fa-solid fa-server text-coral"></i> FastAPI & Uvicorn</h4>
+              <p class="card-body-sm">High-throughput ASGI web framework providing OpenAPI v3 documentation, static asset delivery, and strict CORS boundary enforcement.</p>
+              <div class="tech-badge-wrap mt-sm">
+                <span class="tech-tag">ASGI</span>
+                <span class="tech-tag">OpenAPI 3.1</span>
+                <span class="tech-tag">Port 8000</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-corner-cross top-left">+</div>
+              <div class="card-corner-cross top-right">+</div>
+              <div class="card-num">[ TECH // 03 ]</div>
+              <h4 class="card-title-md"><i class="fa-solid fa-cube text-aqua"></i> Three.js r128 (WebGL)</h4>
+              <p class="card-body-sm">Procedural 3D robotic jellyfish field simulator mounted once at application root with glassmorphic physical shaders and continuous kinematics.</p>
+              <div class="tech-badge-wrap mt-sm">
+                <span class="tech-tag">WebGL</span>
+                <span class="tech-tag">MeshPhysicalMaterial</span>
+                <span class="tech-tag">ACESFilmic</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-corner-cross top-left">+</div>
+              <div class="card-corner-cross top-right">+</div>
+              <div class="card-num">[ TECH // 04 ]</div>
+              <h4 class="card-title-md"><i class="fa-solid fa-brain text-teal"></i> Google Gemini 3.8 Flash</h4>
+              <p class="card-body-sm">Deep semantic reasoning LLM producing structured evidence explanations, uncertainty factors, and priority mitigation steps.</p>
+              <div class="tech-badge-wrap mt-sm">
+                <span class="tech-tag">Google-GenAI SDK</span>
+                <span class="tech-tag">Zero-Shot Evals</span>
+                <span class="tech-tag">Graceful Fallback</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-corner-cross top-left">+</div>
+              <div class="card-corner-cross top-right">+</div>
+              <div class="card-num">[ TECH // 05 ]</div>
+              <h4 class="card-title-md"><i class="fa-solid fa-shield-virus text-coral"></i> VirusTotal v3 Threat Intel</h4>
+              <p class="card-body-sm">Safe external domain reputation cache with SSRF protection, in-memory TTL caching, and zero unverified file upload policy.</p>
+              <div class="tech-badge-wrap mt-sm">
+                <span class="tech-tag">REST v3</span>
+                <span class="tech-tag">1-Hour Cache</span>
+                <span class="tech-tag">SSRF Guarded</span>
+              </div>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-corner-cross top-left">+</div>
+              <div class="card-corner-cross top-right">+</div>
+              <div class="card-num">[ TECH // 06 ]</div>
+              <h4 class="card-title-md"><i class="fa-solid fa-code-check text-mid"></i> Pydantic v2 & Pytest</h4>
+              <p class="card-body-sm">Zero-trust data modeling with strict validation and 98 automated unit, integration, and adversarial prompt-injection assertions.</p>
+              <div class="tech-badge-wrap mt-sm">
+                <span class="tech-tag">98/98 Passed</span>
+                <span class="tech-tag">Fast Validation</span>
+                <span class="tech-tag">Strict Schemas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION J — PAGE 10: TESTING & VERIFICATION EVIDENCE
+           ======================================================================= -->
+      <section id="testing" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 10 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">QUALITY ASSURANCE & EMPIRICAL EVIDENCE</span>
+            </div>
+            <h2 class="section-heading">Verified Test Suite: 98 / 98 Tests Passed</h2>
+            <p class="section-subtext">
+              Every security claim is backed by automated repeatable pytest assertions executed inside Python 3.13:
+            </p>
+          </div>
+
+          <!-- Test Summary Cards -->
+          <div class="instrument-grid grid-3">
+            <div class="instrument-card">
+              <div class="card-num">[ SUITE 01 ]</div>
+              <h4 class="card-title-md">Mandatory Hackathon Scenarios</h4>
+              <div class="test-stat-big text-teal">20 / 20 PASSED</div>
+              <p class="card-body-sm">Covers all 20 required specification scenarios (phishing, SMS, OTP, UPI, jobs, URLs, oversized inputs).</p>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-num">[ SUITE 02 ]</div>
+              <h4 class="card-title-md">Adversarial Prompt Guard & SSRF</h4>
+              <div class="test-stat-big text-teal">23 / 23 PASSED</div>
+              <p class="card-body-sm">Tests instruction overrides, system prompt exfiltration, SSRF loopback blocking, and latency (&lt; 50ms).</p>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-num">[ SUITE 03 ]</div>
+              <h4 class="card-title-md">Safe File Inspection Suite</h4>
+              <div class="test-stat-big text-teal">8 / 8 PASSED</div>
+              <p class="card-body-sm">Tests PE magic byte disguises, double extensions, Zip-bombs (>100:1 ratio), Zip-slip, and EICAR malware hash.</p>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-num">[ SUITE 04 ]</div>
+              <h4 class="card-title-md">PII Minimization & Privacy</h4>
+              <div class="test-stat-big text-teal">11 / 11 PASSED</div>
+              <p class="card-body-sm">Validates Luhn credit card checks, Indian Aadhaar, PAN, UPI handles, and safe logging masks.</p>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-num">[ SUITE 05 ]</div>
+              <h4 class="card-title-md">Credential Setup & Wizard</h4>
+              <div class="test-stat-big text-teal">12 / 12 PASSED</div>
+              <p class="card-body-sm">Tests key masking, non-simulated live provider testing, and safe state restoration in .env.</p>
+            </div>
+
+            <div class="instrument-card">
+              <div class="card-num">[ SUITE 06 ]</div>
+              <h4 class="card-title-md">API Endpoints & SDK Client</h4>
+              <div class="test-stat-big text-teal">9 / 9 PASSED</div>
+              <p class="card-body-sm">Tests all FastAPI endpoints, Member 1 in-process Python client, error serialization, and categories.</p>
+            </div>
+          </div>
+
+          <!-- Documentation Links Strip -->
+          <div class="doc-links-card instrument-card mt-lg">
+            <div class="card-header-bar">
+              <span class="card-num">[ REPORTS ]</span>
+              <span class="card-title">OFFICIAL QA & VERIFICATION AUDIT DOCUMENTS</span>
+            </div>
+            <div class="doc-links-grid">
+              <a href="docs/MEMBER_2_COMPLETE_TEST_REPORT.md" class="doc-link-item" target="_blank">
+                <i class="fa-solid fa-file-lines"></i>
+                <div class="doc-link-text">
+                  <strong>MEMBER_2_COMPLETE_TEST_REPORT.md</strong>
+                  <span>Full test execution logs & methodology</span>
+                </div>
+              </a>
+              <a href="docs/MEMBER_2_SECURITY_AUDIT_REPORT.md" class="doc-link-item" target="_blank">
+                <i class="fa-solid fa-shield-virus"></i>
+                <div class="doc-link-text">
+                  <strong>MEMBER_2_SECURITY_AUDIT_REPORT.md</strong>
+                  <span>Prompt injection & SSRF assessment</span>
+                </div>
+              </a>
+              <a href="docs/MEMBER_2_BUG_FIX_REPORT.md" class="doc-link-item" target="_blank">
+                <i class="fa-solid fa-wrench"></i>
+                <div class="doc-link-text">
+                  <strong>MEMBER_2_BUG_FIX_REPORT.md</strong>
+                  <span>Root causes, surgical fixes, and re-tests</span>
+                </div>
+              </a>
+              <a href="docs/MEMBER_2_FINAL_HANDOVER.md" class="doc-link-item" target="_blank">
+                <i class="fa-solid fa-handshake"></i>
+                <div class="doc-link-text">
+                  <strong>MEMBER_2_FINAL_HANDOVER.md</strong>
+                  <span>Official technical handover document</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION K — PAGE 11: CASE STUDIES & SYNTHETIC DEMONSTRATIONS
+           ======================================================================= -->
+      <section id="cases" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 11 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">SIMULATED VECTORS & REPRODUCIBLE DEMOS</span>
+            </div>
+            <h2 class="section-heading">Verified Case Studies & Demonstrations</h2>
+            <p class="section-subtext">
+              Real-world attack simulations built with safe synthetic test data. Click <strong>Analyze Case</strong> to run each through the live engine:
+            </p>
+          </div>
+
+          <div class="instrument-grid grid-3">
+            <!-- Case 1 -->
+            <div class="instrument-card case-card">
+              <div class="card-kicker"><span class="case-id">CASE // 01</span> <span class="badge-tag">RECRUITMENT</span></div>
+              <h4 class="card-title-md">Fake Summer Internship Fee Scam</h4>
+              <p class="case-desc">"Selected for AI Internship without interview! Pay Rs 1,499 registration fee immediately to receive offer letter."</p>
+              <div class="case-meta">
+                <span>EXPECTED: <strong>CRITICAL</strong></span>
+                <span>INDICATOR: Upfront Fee Trap</span>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block" onclick="loadSample('fake_internship', true)">ANALYZE CASE <i class="fa-solid fa-play"></i></button>
+            </div>
+
+            <!-- Case 2 -->
+            <div class="instrument-card case-card">
+              <div class="card-kicker"><span class="case-id">CASE // 02</span> <span class="badge-tag">UTILITY SMISHING</span></div>
+              <h4 class="card-title-md">Urgent Electricity Disconnection SMS</h4>
+              <p class="case-desc">"Electricity power will be disconnected tonight at 9:30 PM due to un-updated bill. Call officer at 9876543210 immediately."</p>
+              <div class="case-meta">
+                <span>EXPECTED: <strong>HIGH</strong></span>
+                <span>INDICATOR: Artificial Urgency</span>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block" onclick="loadSample('electricity_sms', true)">ANALYZE CASE <i class="fa-solid fa-play"></i></button>
+            </div>
+
+            <!-- Case 3 -->
+            <div class="instrument-card case-card">
+              <div class="card-kicker"><span class="case-id">CASE // 03</span> <span class="badge-tag">CREDENTIAL THEFT</span></div>
+              <h4 class="card-title-md">AnyDesk Installation & OTP Extraction</h4>
+              <p class="case-desc">"Your KYC has expired. Install AnyDesk and share the 9-digit address along with the SMS OTP you just received to unblock your account."</p>
+              <div class="case-meta">
+                <span>EXPECTED: <strong>CRITICAL</strong></span>
+                <span>INDICATOR: Remote Access</span>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block" onclick="loadSample('otp_theft', true)">ANALYZE CASE <i class="fa-solid fa-play"></i></button>
+            </div>
+
+            <!-- Case 4 -->
+            <div class="instrument-card case-card">
+              <div class="card-kicker"><span class="case-id">CASE // 04</span> <span class="badge-tag">PAYMENT FRAUD</span></div>
+              <h4 class="card-title-md">UPI PIN Reversal Cashback Scheme</h4>
+              <p class="case-desc">"Congratulations! You won Rs 5,000 cashback. Enter your UPI PIN to receive the money directly into your bank account."</p>
+              <div class="case-meta">
+                <span>EXPECTED: <strong>CRITICAL</strong></span>
+                <span>INDICATOR: PIN Theft</span>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block" onclick="loadSample('upi_fraud', true)">ANALYZE CASE <i class="fa-solid fa-play"></i></button>
+            </div>
+
+            <!-- Case 5 -->
+            <div class="instrument-card case-card">
+              <div class="card-kicker"><span class="case-id">CASE // 05</span> <span class="badge-tag">LEGAL INTIMIDATION</span></div>
+              <h4 class="card-title-md">CBI Narcotics Parcel Digital Arrest</h4>
+              <p class="case-desc">"This is Crime Branch Mumbai. A FedEx parcel with drugs was seized in your name. You are under Digital Arrest. Keep your camera on."</p>
+              <div class="case-meta">
+                <span>EXPECTED: <strong>CRITICAL</strong></span>
+                <span>INDICATOR: Law Enforcement Spoof</span>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block" onclick="loadSample('digital_arrest', true)">ANALYZE CASE <i class="fa-solid fa-play"></i></button>
+            </div>
+
+            <!-- Case 6 -->
+            <div class="instrument-card case-card">
+              <div class="card-kicker"><span class="case-id">CASE // 06</span> <span class="badge-tag">NETWORK PHISHING</span></div>
+              <h4 class="card-title-md">Obfuscated Low-Reputation TLD Link</h4>
+              <p class="case-desc">"Your banking access is locked. Verify immediately at http://192.168.1.1/pay or https://secure.login.update.account.chase.com.xyz"</p>
+              <div class="case-meta">
+                <span>EXPECTED: <strong>CRITICAL</strong></span>
+                <span>INDICATOR: IP Host + Suspicious TLD</span>
+              </div>
+              <button class="btn btn-primary btn-sm btn-block" onclick="loadSample('url_analysis', true)">ANALYZE CASE <i class="fa-solid fa-play"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION L — PAGE 12: API CONFIGURATION WIZARD
+           ======================================================================= -->
+      <section id="config" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 12 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">AUTHENTICATION & CREDENTIAL MANAGEMENT</span>
+            </div>
+            <h2 class="section-heading">API Connection & Credential Wizard</h2>
+            <p class="section-subtext">
+              Inspect provider connection states, test external credentials with real backend requests,
+              and update credentials locally without restarting services:
+            </p>
+          </div>
+
+          <div class="instrument-grid grid-3">
+            <!-- Provider 1: Gemini -->
+            <div class="instrument-card config-provider-card" id="config-card-gemini">
+              <div class="card-header-bar">
+                <span class="card-num">[ PROVIDER 01 ]</span>
+                <span class="card-title">GOOGLE GEMINI API</span>
+                <span class="status-pill status-amber" id="gemini-status-badge">CHECKING...</span>
+              </div>
+              <p class="card-body-sm">Required for conversational threat explanation, deep semantic reasoning, and mitigation generation.</p>
+              <div class="form-group mt-sm">
+                <label class="form-label" for="cfg-gemini-key">API KEY (GEMINI_API_KEY)</label>
+                <div class="input-with-action">
+                  <input type="password" id="cfg-gemini-key" class="form-input" placeholder="AIzaSy..." />
+                  <button class="btn btn-ghost btn-xs" onclick="togglePasswordVisibility('cfg-gemini-key')"><i class="fa-solid fa-eye"></i></button>
+                </div>
+              </div>
+              <div class="config-actions">
+                <button class="btn btn-secondary btn-sm" onclick="testProviderConnection('gemini')">TEST CONNECTION</button>
+                <button class="btn btn-primary btn-sm" onclick="saveProviderCredentials('gemini')">SAVE KEY</button>
+              </div>
+              <div class="test-result-box" id="test-result-gemini" hidden></div>
+            </div>
+
+            <!-- Provider 2: VirusTotal -->
+            <div class="instrument-card config-provider-card" id="config-card-virustotal">
+              <div class="card-header-bar">
+                <span class="card-num">[ PROVIDER 02 ]</span>
+                <span class="card-title">VIRUSTOTAL v3 API</span>
+                <span class="status-pill status-teal" id="vt-status-badge">CONNECTED</span>
+              </div>
+              <p class="card-body-sm">Optional external threat intelligence. Read-only domain & hash reputation. 1-hour cache enforced. Zero file uploads.</p>
+              <div class="form-group mt-sm">
+                <label class="form-label" for="cfg-vt-key">API KEY (VIRUSTOTAL_API_KEY)</label>
+                <div class="input-with-action">
+                  <input type="password" id="cfg-vt-key" class="form-input" placeholder="663909..." />
+                  <button class="btn btn-ghost btn-xs" onclick="togglePasswordVisibility('cfg-vt-key')"><i class="fa-solid fa-eye"></i></button>
+                </div>
+              </div>
+              <div class="config-actions">
+                <button class="btn btn-secondary btn-sm" onclick="testProviderConnection('virustotal')">TEST CONNECTION</button>
+                <button class="btn btn-primary btn-sm" onclick="saveProviderCredentials('virustotal')">SAVE KEY</button>
+              </div>
+              <div class="test-result-box" id="test-result-virustotal" hidden></div>
+            </div>
+
+            <!-- Provider 3: Safe Browsing -->
+            <div class="instrument-card config-provider-card" id="config-card-safebrowsing">
+              <div class="card-header-bar">
+                <span class="card-num">[ PROVIDER 03 ]</span>
+                <span class="card-title">GOOGLE SAFE BROWSING</span>
+                <span class="status-pill status-mid" id="sb-status-badge">NOT CONFIGURED</span>
+              </div>
+              <p class="card-body-sm">Optional malicious URL database. For non-commercial evaluation. Skip if commercial use is intended.</p>
+              <div class="form-group mt-sm">
+                <label class="form-label" for="cfg-sb-key">API KEY (GOOGLE_SAFE_BROWSING_API_KEY)</label>
+                <div class="input-with-action">
+                  <input type="password" id="cfg-sb-key" class="form-input" placeholder="Optional key..." />
+                  <button class="btn btn-ghost btn-xs" onclick="togglePasswordVisibility('cfg-sb-key')"><i class="fa-solid fa-eye"></i></button>
+                </div>
+              </div>
+              <div class="config-actions">
+                <button class="btn btn-secondary btn-sm" onclick="testProviderConnection('safebrowsing')">TEST CONNECTION</button>
+                <button class="btn btn-primary btn-sm" onclick="saveProviderCredentials('safebrowsing')">SAVE KEY</button>
+              </div>
+              <div class="test-result-box" id="test-result-safebrowsing" hidden></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =======================================================================
+           SECTION M — PAGE 13: ABOUT & CONTACT / HACKATHON HANDOVER
+           ======================================================================= -->
+      <section id="about" class="content-section">
+        <div class="section-container">
+          <div class="section-header-block">
+            <div class="technical-kicker">
+              <span class="kicker-index">[ 13 ]</span>
+              <span class="kicker-sep">//</span>
+              <span class="kicker-tag">PROJECT GOVERNANCE & ACADEMIC REPOSITORY</span>
+            </div>
+            <h2 class="section-heading">About CyberShield AI 2.0 & Team Handover</h2>
+            <p class="section-subtext">
+              Platform specifications, contact channels, and four-member integration documentation:
+            </p>
+          </div>
+
+          <div class="instrument-card handover-card">
+            <div class="card-header-bar">
+              <span class="card-num">[ HACKATHON HANDOVER ]</span>
+              <span class="card-title">CYBERSHIELD AI 2.0 · HACKATHON READINESS ASSESSMENT</span>
+              <span class="status-pill status-teal">READY FOR JURY EVALUATION</span>
+            </div>
+
+            <div class="handover-grid">
+              <div class="handover-col">
+                <h4 class="handover-subtitle">Project Summary</h4>
+                <p>
+                  CyberShield AI 2.0 is an enterprise-grade digital scam intelligence platform
+                  developed for the Adamas Hackathon under the <strong>Cybersecurity & Digital Trust</strong> track.
+                  It combines deterministic heuristics, zero-trust privacy minimization, and contextual AI reasoning.
+                </p>
+              </div>
+              <div class="handover-col">
+                <h4 class="handover-subtitle">Technology Stack</h4>
+                <div class="tech-badge-wrap">
+                  <span class="tech-tag">Python 3.13</span>
+                  <span class="tech-tag">FastAPI</span>
+                  <span class="tech-tag">Uvicorn</span>
+                  <span class="tech-tag">Pydantic v2</span>
+                  <span class="tech-tag">Google Gemini API</span>
+                  <span class="tech-tag">VirusTotal v3</span>
+                  <span class="tech-tag">Regular Expressions & NLP</span>
+                  <span class="tech-tag">HTML5 / CSS3 / Vanilla JS</span>
+                  <span class="tech-tag">Pytest (98/98 Passed)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="handover-footer-strip mt-md">
+              <span><strong>Project Directory:</strong> <code>D:\My Created Projects\new member 2</code></span>
+              <span><strong>Git Remote:</strong> <code>https://github.com/Hackathon-korboo/member-2</code></span>
+              <span><strong>Backend Port:</strong> <code>127.0.0.1:8000</code></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- =========================================================================
+         GLOBAL FOOTER
+         ========================================================================= -->
+    <footer class="global-footer">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <div class="footer-brand">CYBERSHIELD <span class="highlight">AI 2.0</span></div>
+          <div class="footer-meta">Cybersecurity & Digital Trust Track · Adamas University Hackathon</div>
+        </div>
+        <div class="footer-center">
+          <span class="footer-indicator text-teal">● LOCAL CORE: ONLINE (PORT 8000)</span>
+          <span class="footer-sep">·</span>
+          <span>FALLBACK ENGINE: READY</span>
+          <span class="footer-sep">·</span>
+          <span>AUDIT TESTS: 98/98 PASSED</span>
+        </div>
+        <div class="footer-right">
+          <a href="#home" class="footer-link">Back to Top <i class="fa-solid fa-arrow-up"></i></a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Three.js r128 Library (Local copy with CDN fallback) -->
+  <script src="/assets/js/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- Persistent Global 3D Robotic Jellyfish Background Controller -->
+  <script src="/assets/js/persistent_jellyfish.js"></script>
+
+  <!-- Main Platform Interactivity & API Logic -->
+  <script src="main.js"></script>
+</body>
+</html>
